@@ -25,19 +25,46 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Scroll reveal effect
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active')
+          }
+        })
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    )
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div className="relative min-h-screen font-sans selection:bg-primary/30">
-      <div className="liquid-bg" />
+      {/* Noise Texture */}
+      <div className="noise-bg" />
       
-      {/* Navigation - Mobile: Bottom Fixed | Desktop: Top Fixed */}
-      <nav className="fixed bottom-6 left-5 right-5 md:top-8 md:bottom-auto md:left-1/2 md:-translate-x-1/2 z-50 glass px-4 md:px-6 py-2.5 rounded-2xl md:rounded-full glass-border">
-        <div className="flex justify-around md:justify-center md:gap-8 items-center">
+      {/* Aurora Background with Orbs */}
+      <div className="aurora-bg">
+        <div className="orb orb-1" />
+        <div className="orb orb-2" />
+        <div className="orb orb-3" />
+      </div>
+      
+      {/* Premium Navigation */}
+      <nav className="fixed bottom-6 left-4 right-4 md:top-8 md:bottom-auto md:left-1/2 md:-translate-x-1/2 z-50 glass-premium px-4 md:px-8 py-3 rounded-2xl md:rounded-full">
+        <div className="flex justify-around md:justify-center md:gap-10 items-center">
           {['hero', 'about', 'projects', 'skills', 'contact'].map((item) => (
             <a
               key={item}
               href={`#${item}`}
-              className={`text-[10px] md:text-[13px] font-bold transition-all px-2 py-1 ${
-                activeSection === item ? 'text-blue-400' : 'text-zinc-500 hover:text-zinc-300'
+              className={`relative text-[10px] md:text-[12px] font-bold transition-all duration-300 px-2 py-1.5 rounded-lg ${
+                activeSection === item 
+                  ? 'text-blue-400 nav-active' 
+                  : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/5'
               }`}
             >
               {item.toUpperCase()}
@@ -54,8 +81,10 @@ function App() {
         <Contact />
       </main>
 
-      <footer className="py-20 text-center text-zinc-600 text-[12px] tracking-widest uppercase">
-        <p>© {new Date().getFullYear()} — Designed for Excellence</p>
+      <footer className="py-20 text-center">
+        <p className="text-zinc-600 text-[11px] tracking-[0.2em] uppercase font-medium">
+          © {new Date().getFullYear()} — Crafted with precision
+        </p>
       </footer>
     </div>
   )

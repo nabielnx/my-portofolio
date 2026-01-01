@@ -1,50 +1,132 @@
+import { useEffect, useRef, useState } from 'react'
+
 const projects = [
   {
     title: 'Nalar Architecture',
     category: 'Full Stack',
-    description: 'Scalable cloud-native enterprise management system.',
-    tags: ['React', 'Postgres']
+    description: 'Scalable cloud-native enterprise management system with real-time analytics.',
+    tags: ['React', 'Node.js', 'PostgreSQL', 'AWS'],
+    color: 'from-blue-500/20 to-purple-500/20'
   },
   {
     title: 'Zenith UI Kit',
     category: 'Design System',
-    description: 'A professional-grade component library for SaaS.',
-    tags: ['Tailwind', 'Next.js']
+    description: 'A professional-grade component library for modern SaaS applications.',
+    tags: ['Tailwind', 'Next.js', 'Figma'],
+    color: 'from-emerald-500/20 to-cyan-500/20'
   },
   {
     title: 'Flux AI',
     category: 'Deep Learning',
-    description: 'Real-time content analysis using transformer models.',
-    tags: ['Python', 'Azure']
+    description: 'Real-time content analysis platform using transformer models.',
+    tags: ['Python', 'TensorFlow', 'Azure'],
+    color: 'from-orange-500/20 to-rose-500/20'
   }
 ]
 
 const Projects = () => {
+  const [isVisible, setIsVisible] = useState(false)
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true)
+      },
+      { threshold: 0.1 }
+    )
+    if (sectionRef.current) observer.observe(sectionRef.current)
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <section id="projects" className="py-40 px-6 max-w-7xl mx-auto">
-      <div className="mb-24">
-        <h2 className="text-4xl md:text-6xl tracking-tighter mb-6">SELECTED <br /><span className="text-zinc-500">PROJECTS</span></h2>
+    <section ref={sectionRef} id="projects" className="py-32 md:py-40 px-6 max-w-7xl mx-auto">
+      {/* Section Header */}
+      <div 
+        className={`mb-20 md:mb-24 transition-all duration-700 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
+        <h2 className="text-4xl md:text-6xl tracking-tighter mb-4">
+          SELECTED <br />
+          <span className="text-blue-gradient">PROJECTS</span>
+        </h2>
+        <p className="text-zinc-500 max-w-md">
+          A curated selection of work that showcases my expertise in building modern digital experiences.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+      {/* Projects Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
         {projects.map((project, index) => (
-          <div key={index} className="group cursor-pointer">
-            <div className="aspect-[16/10] bg-zinc-900 rounded-2xl mb-8 overflow-hidden glass-border relative transition-all duration-500 group-hover:scale-[1.02]">
-               <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-               <div className="absolute bottom-6 left-6 text-[10px] font-bold text-zinc-500 tracking-widest uppercase">0{index + 1} / Project</div>
-            </div>
-            <div className="space-y-4 px-2">
-              <div className="text-[11px] font-bold text-primary uppercase tracking-widest">
-                {project.category}
+          <div 
+            key={index} 
+            className={`group cursor-pointer transition-all duration-700 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+            }`}
+            style={{ transitionDelay: `${index * 150}ms` }}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            {/* Project Card */}
+            <div className={`
+              relative aspect-[4/3] rounded-2xl mb-6 overflow-hidden 
+              glass-premium card-hover
+              ${hoveredIndex === index ? 'glow-border' : ''}
+            `}>
+              {/* Gradient Background */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+              
+              {/* Grid Pattern */}
+              <div className="absolute inset-0 opacity-20"
+                style={{
+                  backgroundImage: `linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                                    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)`,
+                  backgroundSize: '30px 30px'
+                }}
+              />
+              
+              {/* Project Number */}
+              <div className="absolute top-5 left-5 flex items-center gap-2">
+                <span className="text-3xl font-bold text-white/10 group-hover:text-white/30 transition-colors">
+                  0{index + 1}
+                </span>
               </div>
-              <h3 className="text-2xl tracking-tight font-bold">{project.title}</h3>
-              <p className="text-zinc-500 text-sm leading-relaxed max-w-xs transition-colors group-hover:text-zinc-300">
+
+              {/* Arrow Indicator */}
+              <div className="absolute bottom-5 right-5 w-10 h-10 rounded-full glass flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </div>
+            </div>
+            
+            {/* Project Info */}
+            <div className="space-y-3 px-1">
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.15em]">
+                  {project.category}
+                </span>
+                <div className="flex-1 h-px bg-zinc-800" />
+              </div>
+              
+              <h3 className="text-xl md:text-2xl tracking-tight font-bold group-hover:text-blue-400 transition-colors duration-300">
+                {project.title}
+              </h3>
+              
+              <p className="text-zinc-500 text-sm leading-relaxed group-hover:text-zinc-400 transition-colors">
                 {project.description}
               </p>
-              <div className="flex gap-4 pt-2">
+              
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2 pt-3">
                 {project.tags.map(tag => (
-                  <span key={tag} className="text-[10px] font-bold text-zinc-600 uppercase tracking-tighter">
-                    #{tag}
+                  <span 
+                    key={tag} 
+                    className="text-[10px] font-semibold text-zinc-600 uppercase tracking-tight px-2 py-1 rounded-md bg-white/5 group-hover:bg-blue-500/10 group-hover:text-blue-400/80 transition-all"
+                  >
+                    {tag}
                   </span>
                 ))}
               </div>

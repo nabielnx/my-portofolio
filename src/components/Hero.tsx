@@ -1,30 +1,83 @@
+import { useEffect, useState } from 'react'
+
 const Hero = () => {
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => {
+    setIsLoaded(true)
+  }, [])
+
   return (
-    <section id="hero" className="min-h-screen flex flex-col items-center justify-center relative px-6 text-center">
+    <section id="hero" className="min-h-screen flex flex-col items-center justify-center relative px-6 text-center overflow-hidden">
       <div className="z-10 max-w-4xl">
-        <div className="inline-block px-3 py-1 mb-8 glass-border rounded-full text-[10px] uppercase tracking-[0.2em] text-zinc-400">
-          Available for Collaboration
-        </div>
+      
         
-        <h1 className="text-5xl md:text-8xl mb-8 leading-[1.1] tracking-tighter">
-          ELEGANT SOLUTIONS <br />
-          <span className="text-blue-gradient">FOR THE WEB</span>
+        <h1 className="text-6xl md:text-9xl mb-12 leading-[0.95] tracking-tighter font-black">
+          <span 
+            className={`block transition-all duration-1000 delay-100 ${
+              isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
+            }`}
+          >
+            CREATING
+          </span>
+          <span 
+            className={`block text-blue-gradient transition-all duration-1000 delay-300 ${
+              isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
+            }`}
+          >
+            SYSTEMS
+          </span>
+        </h1>
+
+        <br />
+        <h1 className="text-6xl md:text-9xl mb-12 leading-[0.95] tracking-tighter font-black">
+          <span 
+            className={`block transition-all duration-1000 delay-100 ${
+              isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
+            }`}
+          >
+            Muhammad Zaiimun Nabil
+          </span>
         </h1>
         
-        <p className="max-w-xl mx-auto text-zinc-400 text-base md:text-lg mb-12 font-medium tracking-tight">
+        {/* Subtitle */}
+        <p 
+          className={`max-w-xl mx-auto text-zinc-400 text-base md:text-lg mb-14 font-medium tracking-tight leading-relaxed transition-all duration-700 delay-500 ${
+            isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
           A full-stack developer crafting high-performance, 
           minimalist digital experiences with precision and care.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-5 justify-center">
-          <a href="#projects" className="px-10 py-4 bg-white text-black text-sm font-bold rounded-xl hover:bg-zinc-200 transition-all active:scale-95">
-            MY PROJECTS
+        {/* Premium CTA Buttons */}
+        <div 
+          className={`flex flex-col sm:flex-row gap-5 justify-center transition-all duration-700 delay-700 ${
+            isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <a 
+            href="#projects" 
+            className="group relative px-10 py-4 bg-white text-black text-sm font-bold rounded-xl btn-glow overflow-hidden transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]"
+          >
+            <span className="relative z-10">VIEW MY WORK</span>
           </a>
-          <a href="#contact" className="px-10 py-4 glass glass-border text-white text-sm font-bold rounded-xl hover:bg-white/5 transition-all active:scale-95">
-            LET'S TALK
+          <a 
+            href="#contact" 
+            className="group px-10 py-4 glass-premium text-white text-sm font-bold rounded-xl transition-all duration-300 glow-card hover:border-blue-500/30"
+          >
+            <span className="group-hover:text-blue-400 transition-colors">LET'S CONNECT</span>
           </a>
         </div>
       </div>
+
+      <style>{`
+        @keyframes slide-down {
+          0% { transform: translateY(-100%); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translateY(300%); opacity: 0; }
+        }
+      `}</style>
     </section>
   )
 }
