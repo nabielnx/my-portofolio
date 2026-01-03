@@ -16,7 +16,7 @@ const Contact = () => {
   }, [])
 
   return (
-    <section ref={sectionRef} id="contact" className="py-32 md:py-40 px-6 max-w-5xl mx-auto text-center">
+    <section ref={sectionRef} id="contact" className="py-24 md:py-40 px-6 max-w-7xl mx-auto text-center">
       {/* Section Header */}
       <div 
         className={`mb-16 transition-all duration-700 ${

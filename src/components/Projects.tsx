@@ -21,7 +21,7 @@ const Projects = () => {
   }, [])
 
   return (
-    <section ref={sectionRef} id="projects" className="py-32 md:py-40 px-6 max-w-7xl mx-auto">
+    <section ref={sectionRef} id="projects" className="py-24 md:py-40 px-6 max-w-7xl mx-auto">
       {/* Section Header */}
       <div 
         className={`mb-20 md:mb-24 transition-all duration-700 ${

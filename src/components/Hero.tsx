@@ -74,7 +74,7 @@ const Hero = () => {
         </div>
 
         {/* Right Column - Profile Photo */}
-        <div className={`order-1 md:order-2 flex justify-center md:justify-end relative transition-all duration-1000 delay-300 ${
+        <div className={`order-1 md:order-2 flex justify-center md:justify-end relative transition-all duration-1000 delay-300 mt-12 md:mt-0 ${
            isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
         }`}>
            <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">

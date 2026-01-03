@@ -29,7 +29,7 @@ const Skills = () => {
   }, [])
 
   return (
-    <section ref={sectionRef} id="skills" className="py-24 md:py-32 px-6 max-w-6xl mx-auto">
+    <section ref={sectionRef} id="skills" className="py-24 md:py-40 px-6 max-w-7xl mx-auto">
       <div 
         className={`glass-premium p-10 md:p-16 lg:p-20 rounded-3xl glow-card transition-all duration-700 ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
