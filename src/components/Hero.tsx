@@ -12,37 +12,38 @@ const Hero = () => {
       <div className="z-10 max-w-4xl">
       
         
-        <h1 className="text-6xl md:text-9xl mb-12 leading-[0.95] tracking-tighter font-black">
-          <span 
-            className={`block transition-all duration-1000 delay-100 ${
-              isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
-            }`}
-          >
-            CREATING
-          </span>
-          <span 
-            className={`block text-blue-gradient transition-all duration-1000 delay-300 ${
-              isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
-            }`}
-          >
-            SYSTEMS
-          </span>
-        </h1>
+        <div className="flex flex-col gap-6 md:gap-8 mb-12">
+          <h1 className="text-6xl md:text-9xl leading-[0.9] tracking-tighter font-black text-balance">
+            <span 
+              className={`block transition-all duration-1000 delay-100 ${
+                isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
+              }`}
+            >
+              CREATING
+            </span>
+            <span 
+              className={`block text-blue-gradient transition-all duration-1000 delay-300 ${
+                isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
+              }`}
+            >
+              SYSTEMS
+            </span>
+          </h1>
 
-        <br />
-        <h1 className="text-6xl md:text-9xl mb-12 leading-[0.95] tracking-tighter font-black">
-          <span 
-            className={`block transition-all duration-1000 delay-100 ${
-              isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
+          <div
+            className={`transition-all duration-1000 delay-500 ${
+               isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
             }`}
           >
-            Muhammad Zaiimun Nabil
-          </span>
-        </h1>
+             <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white/90 text-balance">
+              Muhammad Zaiimun Nabil
+             </h2>
+          </div>
+        </div>
         
         {/* Subtitle */}
         <p 
-          className={`max-w-xl mx-auto text-zinc-400 text-base md:text-lg mb-14 font-medium tracking-tight leading-relaxed transition-all duration-700 delay-500 ${
+          className={`max-w-xl mx-auto text-zinc-400 text-base md:text-lg mb-14 font-medium tracking-tight leading-relaxed transition-all duration-700 delay-700 ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >

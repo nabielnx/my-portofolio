@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
+import { Code2, Settings, Database, Cloud, Palette, LayoutTemplate, Server, Workflow } from 'lucide-react'
 
 const skills = [
-  { name: 'React Ecosystem', icon: '⚛️' },
-  { name: 'TypeScript', icon: '📘' },
-  { name: 'Node.js', icon: '🟢' },
-  { name: 'PostgreSQL', icon: '🐘' },
-  { name: 'Cloud Architecture', icon: '☁️' },
-  { name: 'Figma', icon: '🎨' },
-  { name: 'CI/CD Pipeline', icon: '🔄' },
-  { name: 'System Design', icon: '📐' }
+  { name: 'React Ecosystem', icon: Code2 },
+  { name: 'TypeScript', icon: Settings }, // Using Settings as abstraction for typed config/structure or create custom
+  { name: 'Node.js', icon: Server },
+  { name: 'PostgreSQL', icon: Database },
+  { name: 'Cloud Architecture', icon: Cloud },
+  { name: 'Figma', icon: Palette },
+  { name: 'CI/CD Pipeline', icon: Workflow },
+  { name: 'System Design', icon: LayoutTemplate }
 ]
 
 const Skills = () => {
@@ -40,7 +41,7 @@ const Skills = () => {
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
             }`}
           >
-            <h2 className="text-4xl md:text-5xl tracking-tighter mb-6 leading-tight">
+            <h2 className="text-4xl md:text-5xl tracking-tighter mb-6 leading-tight text-balance">
               CORE <br />
               <span className="text-blue-gradient">EXPERTISE</span>
             </h2>
@@ -72,10 +73,9 @@ const Skills = () => {
                 }`}
                 style={{ transitionDelay: `${300 + index * 80}ms` }}
               >
-                {/* Animated Dot */}
-                <div className="relative">
-                  <div className="w-2.5 h-2.5 rounded-full bg-blue-500 group-hover:animate-pulse" />
-                  <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-blue-500 opacity-0 group-hover:opacity-50 group-hover:animate-ping" />
+                {/* Icon Wrapper */}
+                <div className="p-2 rounded-lg bg-blue-500/10 text-blue-400 group-hover:text-white group-hover:bg-blue-500 transition-all duration-300">
+                  <skill.icon size={20} strokeWidth={1.5} />
                 </div>
                 
                 {/* Skill Name */}
@@ -83,9 +83,9 @@ const Skills = () => {
                   {skill.name}
                 </span>
                 
-                {/* Icon */}
-                <span className="ml-auto text-lg opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:scale-110">
-                  {skill.icon}
+                {/* Arrow Indicator (replaces old icon) */}
+                <span className="ml-auto opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
+                   <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
                 </span>
               </div>
             ))}

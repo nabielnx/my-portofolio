@@ -39,15 +39,15 @@ const About = () => {
   }, [])
 
   return (
-    <section ref={sectionRef} id="about" className="py-32 md:py-40 px-6 max-w-6xl mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-20 items-start">
+    <section ref={sectionRef} id="about" className="py-24 md:py-40 px-6 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-start">
         {/* Left Column - Title */}
         <div 
           className={`space-y-8 transition-all duration-700 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <h2 className="text-4xl md:text-6xl tracking-tighter leading-tight">
+          <h2 className="text-4xl md:text-6xl tracking-tighter leading-tight text-balance">
             ABOUT <br />
             <span className="text-blue-gradient">Muhammad Zaiimun Nabiil</span>
           </h2>
@@ -57,7 +57,7 @@ const About = () => {
         {/* Right Column - Content */}
         <div className="space-y-8">
           <div 
-            className={`space-y-6 text-zinc-400 text-lg leading-relaxed font-medium transition-all duration-700 delay-200 ${
+            className={`space-y-6 text-zinc-400 text-lg leading-relaxed font-medium transition-all duration-700 delay-200 max-w-prose ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >

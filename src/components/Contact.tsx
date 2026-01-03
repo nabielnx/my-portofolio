@@ -23,7 +23,7 @@ const Contact = () => {
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
-        <h2 className="text-5xl md:text-7xl lg:text-8xl tracking-tighter mb-6 leading-tight">
+        <h2 className="text-4xl md:text-6xl lg:text-8xl tracking-tighter mb-6 leading-tight text-balance">
           READY TO <br />
           <span className="text-blue-gradient">COLLABORATE?</span>
         </h2>
@@ -34,7 +34,7 @@ const Contact = () => {
 
       {/* Contact Cards */}
       <div 
-        className={`grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 transition-all duration-700 delay-200 ${
+        className={`grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-16 transition-all duration-700 delay-200 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >

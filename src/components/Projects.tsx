@@ -1,32 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-
-const projects = [
-  {
-    title: 'Nalar Architecture',
-    category: 'Full Stack',
-    description: 'Scalable cloud-native enterprise management system with real-time analytics.',
-    tags: ['React', 'Node.js', 'PostgreSQL', 'AWS'],
-    color: 'from-blue-500/20 to-purple-500/20'
-  },
-  {
-    title: 'Zenith UI Kit',
-    category: 'Design System',
-    description: 'A professional-grade component library for modern SaaS applications.',
-    tags: ['Tailwind', 'Next.js', 'Figma'],
-    color: 'from-emerald-500/20 to-cyan-500/20'
-  },
-  {
-    title: 'Flux AI',
-    category: 'Deep Learning',
-    description: 'Real-time content analysis platform using transformer models.',
-    tags: ['Python', 'TensorFlow', 'Azure'],
-    color: 'from-orange-500/20 to-rose-500/20'
-  }
-]
+import { projects } from '../data/projects'
+import type { Project } from '../data/projects'
+import ProjectDetail from './ProjectDetail'
 
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const sectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -68,6 +48,7 @@ const Projects = () => {
             style={{ transitionDelay: `${index * 150}ms` }}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
+            onClick={() => setSelectedProject(project)}
           >
             {/* Project Card */}
             <div className={`
@@ -75,14 +56,24 @@ const Projects = () => {
               glass-premium card-hover
               ${hoveredIndex === index ? 'glow-border' : ''}
             `}>
-              {/* Gradient Background */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+              {/* Project Image */}
+              <img 
+                src={project.image} 
+                alt={project.title}
+                className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+              />
+
+              {/* Gradient Overlay */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-40 group-hover:opacity-60 transition-opacity duration-500 mix-blend-overlay`} />
               
+              {/* Dark Gradient for Text Legibility (if needed) */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+
               {/* Grid Pattern */}
-              <div className="absolute inset-0 opacity-20"
+              <div className="absolute inset-0 opacity-20 mix-blend-overlay"
                 style={{
-                  backgroundImage: `linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                                    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)`,
+                  backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                                    linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
                   backgroundSize: '30px 30px'
                 }}
               />
@@ -116,7 +107,7 @@ const Projects = () => {
               </h3>
               
               <p className="text-zinc-500 text-sm leading-relaxed group-hover:text-zinc-400 transition-colors">
-                {project.description}
+                {project.shortDescription}
               </p>
               
               {/* Tags */}
@@ -134,6 +125,13 @@ const Projects = () => {
           </div>
         ))}
       </div>
+      {/* Project Detail Overlay */}
+      {selectedProject && (
+        <ProjectDetail 
+           project={selectedProject} 
+           onClose={() => setSelectedProject(null)} 
+        />
+      )}
     </section>
   )
 }
