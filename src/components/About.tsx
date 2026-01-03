@@ -39,7 +39,7 @@ const About = () => {
   }, [])
 
   return (
-    <section ref={sectionRef} id="about" className="py-24 md:py-40 px-6 max-w-7xl mx-auto">
+    <section ref={sectionRef} id="about" className="min-h-screen flex flex-col justify-center py-24 md:py-40 px-6 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-start">
         {/* Left Column - Title */}
         <div 
