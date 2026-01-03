@@ -1,15 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
-import { Code2, Settings, Database, Cloud, Palette, LayoutTemplate, Server, Workflow } from 'lucide-react'
+import { SiReact, SiTypescript, SiNodedotjs, SiPostgresql, SiAmazonwebservices, SiFigma, SiGithubactions } from 'react-icons/si'
+import { FaProjectDiagram } from 'react-icons/fa'
 
 const skills = [
-  { name: 'React Ecosystem', icon: Code2 },
-  { name: 'TypeScript', icon: Settings }, // Using Settings as abstraction for typed config/structure or create custom
-  { name: 'Node.js', icon: Server },
-  { name: 'PostgreSQL', icon: Database },
-  { name: 'Cloud Architecture', icon: Cloud },
-  { name: 'Figma', icon: Palette },
-  { name: 'CI/CD Pipeline', icon: Workflow },
-  { name: 'System Design', icon: LayoutTemplate }
+  { name: 'React Ecosystem', icon: SiReact },
+  { name: 'TypeScript', icon: SiTypescript },
+  { name: 'Node.js', icon: SiNodedotjs },
+  { name: 'PostgreSQL', icon: SiPostgresql },
+  { name: 'Cloud Architecture', icon: SiAmazonwebservices },
+  { name: 'Figma', icon: SiFigma },
+  { name: 'CI/CD Pipeline', icon: SiGithubactions },
+  { name: 'System Design', icon: FaProjectDiagram }
 ]
 
 const Skills = () => {
