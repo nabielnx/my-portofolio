@@ -20,14 +20,14 @@ const Hero = () => {
                   isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
                 }`}
               >
-                CREATING
+                I'm
               </span>
               <span 
                 className={`block text-blue-gradient transition-all duration-1000 delay-300 ${
                   isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
                 }`}
               >
-                SYSTEMS
+                Game Developer
               </span>
             </h1>
 
@@ -75,25 +75,44 @@ const Hero = () => {
 
         {/* Right Column - Profile Photo */}
         <div className={`order-1 md:order-2 flex justify-center md:justify-end relative transition-all duration-1000 delay-300 mt-12 md:mt-0 ${
-           isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+            isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
         }`}>
-           <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
-              {/* Glow Effect behind */}
-              <div className="absolute inset-0 bg-blue-500/20 blur-[80px] rounded-full animate-pulse-glow" />
-              
-              {/* Photo Container with Mask */}
-              <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white/10 glass-premium glow-border">
-                <img 
-                   src="https://github.com/nabielnx.png" 
-                   alt="Muhammad Zaiimun Nabil" 
-                   className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700 transform hover:scale-105"
+            {/* Container Utama (Relative Parent) */}
+            {/* Ukuran wadah ini menentukan ukuran lingkaran profil */}
+            <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 group">
+
+                {/* ================= 1. KARAKTER VOXEL (DIBELAKANG) ================= */}
+                <img
+                    src="/images/me.png" // Pastikan path file lo bener
+                    alt="Voxel Character"
+                    // --- PENJELASAN PERUBAHAN ---
+                    // absolute z-10: PENTING! z-index rendah biar dia ada di belakang lingkaran.
+                    // left-1/2 -translate-x-1/2: Biar posisinya pas di tengah-tengah horizontal.
+                    // -top-20 md:-top-28: Menarik karakter ke atas supaya kepalanya nongol. Atur angka ini kalau kurang naik/turun.
+                    // w-56 h-56 md:w-80 md:h-80...: Ukuran DIPERBESAR biar badannya ketutup lingkaran tapi kepala & kaki kelihatan.
+                    className="absolute z-10 left-1/2 -translate-x-1/2 -top-20 md:-top-28 lg:-top-32 w-56 h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 transition-transform duration-300 group-hover:-translate-y-2 pointer-events-none"
                 />
-                
-                {/* Overlay Gradient for integration */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
-              </div>
-              
-           </div>
+                {/* ================================================================== */}
+
+
+                {/* 2. Glow Effect behind (Layer paling dasar) */}
+                <div className="absolute z-0 inset-0 bg-blue-500/20 blur-[80px] rounded-full animate-pulse-glow" />
+
+                {/* ================= 3. LINGKARAN PROFIL (DIDEPAN) ================== */}
+                {/* PENTING! z-index diubah jadi z-20 supaya dia menutupi bagian tengah karakter */}
+                <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-blue-500/30 glass-premium glow-border z-20">
+                    <img
+                        src="https://github.com/nabielnx.png"
+                        alt="Muhammad Zaiimun Nabil"
+                        className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700 transform hover:scale-105"
+                    />
+
+                    {/* Overlay Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
+                </div>
+                {/* ================================================================== */}
+
+            </div>
         </div>
       </div>
 
