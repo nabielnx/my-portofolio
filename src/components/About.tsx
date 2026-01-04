@@ -49,9 +49,9 @@ const About = () => {
         >
           <h2 className="text-4xl md:text-6xl tracking-tighter leading-tight text-balance">
             ABOUT <br />
-            <span className="text-blue-gradient">Muhammad Zaiimun Nabiil</span>
+            <span className="text-primary-gradient">Muhammad Zaiimun Nabiil</span>
           </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
+          <div className="w-20 h-1 bg-gradient-to-r from-red-500 to-teal-500 rounded-full" />
         </div>
         
         {/* Right Column - Content */}
@@ -78,7 +78,7 @@ const About = () => {
             }`}
           >
             <div className="glass-premium p-6 rounded-2xl text-center glow-card group">
-              <p className="text-4xl md:text-5xl text-white font-bold mb-2 text-blue-gradient">
+              <p className="text-4xl md:text-5xl text-white font-bold mb-2 text-primary-gradient">
                 {String(experienceCount).padStart(2, '0')}+
               </p>
               <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-semibold group-hover:text-zinc-400 transition-colors">

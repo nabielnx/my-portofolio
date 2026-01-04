@@ -23,7 +23,7 @@ const Hero = () => {
                 I'm
               </span>
               <span 
-                className={`block text-blue-gradient transition-all duration-1000 delay-300 ${
+                className={`block text-primary-gradient transition-all duration-1000 delay-300 ${
                   isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
                 }`}
               >
@@ -66,9 +66,9 @@ const Hero = () => {
             </a>
             <a 
               href="#contact" 
-              className="group px-8 py-3.5 glass-premium text-white text-sm font-bold rounded-xl transition-all duration-300 glow-card hover:border-blue-500/30"
+              className="group px-8 py-3.5 glass-premium text-white text-sm font-bold rounded-xl transition-all duration-300 glow-card hover:border-red-500/30"
             >
-              <span className="group-hover:text-blue-400 transition-colors">LET'S CONNECT</span>
+              <span className="group-hover:text-red-400 transition-colors">LET'S CONNECT</span>
             </a>
           </div>
         </div>
@@ -96,11 +96,11 @@ const Hero = () => {
 
 
                 {/* 2. Glow Effect behind (Layer paling dasar) */}
-                <div className="absolute z-0 inset-0 bg-blue-500/20 blur-[80px] rounded-full animate-pulse-glow" />
+                <div className="absolute z-0 inset-0 bg-red-500/20 blur-[80px] rounded-full animate-pulse-glow" />
 
                 {/* ================= 3. LINGKARAN PROFIL (DIDEPAN) ================== */}
                 {/* PENTING! z-index diubah jadi z-20 supaya dia menutupi bagian tengah karakter */}
-                <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-blue-500/30 glass-premium glow-border z-20">
+                <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-red-500/30 glass-premium glow-border z-20">
                     <img
                         src="https://github.com/nabielnx.png"
                         alt="Muhammad Zaiimun Nabil"

@@ -19,7 +19,7 @@ export const projects: Project[] = [
     shortDescription: 'Scalable cloud-native enterprise management system with real-time analytics.',
     longDescription: 'Nalar Architecture is a comprehensive enterprise solution designed to handle high-frequency data processing and real-time analytics. Built with a microservices-first approach, it ensures 99.99% uptime and horizontal scalability. The system integrates seamless data visualization pipelines and robust role-based access control.',
     tags: ['React', 'Node.js', 'PostgreSQL', 'AWS'],
-    color: 'from-blue-500/20 to-purple-500/20',
+    color: 'from-red-500/20 to-teal-500/20',
     image: 'https://placehold.co/1920x1080/1e293b/475569?text=Nalar+Main',
     demoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', // Placeholder
     features: [
@@ -45,7 +45,7 @@ export const projects: Project[] = [
     shortDescription: 'A professional-grade component library for modern SaaS applications.',
     longDescription: 'Zenith UI is a meticulously crafted component library focused on accessibility and performance. It provides a comprehensive set of React components styled with Tailwind CSS, fully themed and dark-mode ready out of the box. Designed for developers who value aesthetics without compromising on speed.',
     tags: ['Tailwind', 'Next.js', 'Figma'],
-    color: 'from-emerald-500/20 to-cyan-500/20',
+    color: 'from-teal-500/20 to-cyan-500/20',
     image: 'https://placehold.co/1920x1080/0f172a/334155?text=Zenith+UI+Kit',
     features: [
       'WCAG 2.1 AA Compliant',
@@ -64,7 +64,7 @@ export const projects: Project[] = [
     shortDescription: 'Real-time content analysis platform using transformer models.',
     longDescription: 'Flux AI leverages advanced transformer models to provide real-time content moderation and sentiment analysis. The platform exposes a low-latency API capable of processing thousands of requests per second, making it ideal for social media platforms and large-scale communities.',
     tags: ['Python', 'TensorFlow', 'Azure'],
-    color: 'from-orange-500/20 to-rose-500/20',
+    color: 'from-red-500/20 to-orange-500/20',
     image: 'https://placehold.co/1920x1080/312e81/4338ca?text=Flux+AI+Core',
     demoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
     features: [

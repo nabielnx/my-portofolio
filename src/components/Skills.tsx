@@ -44,7 +44,7 @@ const Skills = () => {
           >
             <h2 className="text-4xl md:text-5xl tracking-tighter mb-6 leading-tight text-balance">
               CORE <br />
-              <span className="text-blue-gradient">EXPERTISE</span>
+              <span className="text-primary-gradient">EXPERTISE</span>
             </h2>
             <p className="text-zinc-400 text-base leading-relaxed tracking-tight mb-8">
               A comprehensive toolkit tailored for modern web development and high-stakes production environments.
@@ -55,7 +55,7 @@ const Skills = () => {
               {['Frontend', 'Backend', 'DevOps'].map((area, i) => (
                 <span 
                   key={area}
-                  className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.15em] px-4 py-2 rounded-full border border-zinc-800 hover:border-blue-500/50 hover:text-blue-400 transition-all cursor-default"
+                  className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.15em] px-4 py-2 rounded-full border border-zinc-800 hover:border-red-500/50 hover:text-red-400 transition-all cursor-default"
                   style={{ animationDelay: `${i * 100}ms` }}
                 >
                   {area}
@@ -69,13 +69,13 @@ const Skills = () => {
             {skills.map((skill, index) => (
               <div 
                 key={index} 
-                className={`group flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-transparent hover:border-blue-500/20 transition-all duration-300 cursor-default ${
+                className={`group flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-transparent hover:border-red-500/20 transition-all duration-300 cursor-default ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 }`}
                 style={{ transitionDelay: `${300 + index * 80}ms` }}
               >
                 {/* Icon Wrapper */}
-                <div className="p-2 rounded-lg bg-blue-500/10 text-blue-400 group-hover:text-white group-hover:bg-blue-500 transition-all duration-300">
+                <div className="p-2 rounded-lg bg-red-500/10 text-red-400 group-hover:text-white group-hover:bg-red-500 transition-all duration-300">
                   <skill.icon size={20} strokeWidth={1.5} />
                 </div>
                 
@@ -86,7 +86,7 @@ const Skills = () => {
                 
                 {/* Arrow Indicator (replaces old icon) */}
                 <span className="ml-auto opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
-                   <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                   <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
                 </span>
               </div>
             ))}

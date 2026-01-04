@@ -30,7 +30,7 @@ const Projects = () => {
       >
         <h2 className="text-4xl md:text-6xl tracking-tighter mb-4">
           SELECTED <br />
-          <span className="text-blue-gradient">PROJECTS</span>
+          <span className="text-primary-gradient">PROJECTS</span>
         </h2>
         <p className="text-zinc-500 max-w-md">
           A curated selection of work that showcases my expertise in building modern digital experiences.
@@ -96,13 +96,13 @@ const Projects = () => {
             {/* Project Info */}
             <div className="space-y-3 px-1">
               <div className="flex items-center gap-3">
-                <span className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.15em]">
+                <span className="text-[10px] font-bold text-red-400 uppercase tracking-[0.15em]">
                   {project.category}
                 </span>
                 <div className="flex-1 h-px bg-zinc-800" />
               </div>
               
-              <h3 className="text-xl md:text-2xl tracking-tight font-bold group-hover:text-blue-400 transition-colors duration-300">
+              <h3 className="text-xl md:text-2xl tracking-tight font-bold group-hover:text-red-400 transition-colors duration-300">
                 {project.title}
               </h3>
               
@@ -115,7 +115,7 @@ const Projects = () => {
                 {project.tags.map(tag => (
                   <span 
                     key={tag} 
-                    className="text-[10px] font-semibold text-zinc-600 uppercase tracking-tight px-2 py-1 rounded-md bg-white/5 group-hover:bg-blue-500/10 group-hover:text-blue-400/80 transition-all"
+                    className="text-[10px] font-semibold text-zinc-600 uppercase tracking-tight px-2 py-1 rounded-md bg-white/5 group-hover:bg-red-500/10 group-hover:text-red-400/80 transition-all"
                   >
                     {tag}
                   </span>

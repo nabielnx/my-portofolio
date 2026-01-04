@@ -63,7 +63,7 @@ function App() {
               href={`#${item}`}
               className={`relative text-[10px] md:text-[12px] font-bold transition-all duration-300 px-2 py-1.5 rounded-lg ${
                 activeSection === item 
-                  ? 'text-blue-400 nav-active' 
+                  ? 'text-red-400 nav-active' 
                   : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/5'
               }`}
             >

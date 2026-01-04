@@ -74,7 +74,7 @@ const ProjectDetail = ({ project, onClose }: ProjectDetailProps) => {
             {project.screenshots.map((shot, idx) => (
               <div 
                 key={idx} 
-                className={`aspect-video rounded-xl overflow-hidden cursor-pointer border-2 transition-all ${activeScreenshot === idx ? 'border-blue-500' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                className={`aspect-video rounded-xl overflow-hidden cursor-pointer border-2 transition-all ${activeScreenshot === idx ? 'border-red-500' : 'border-transparent opacity-60 hover:opacity-100'}`}
                 onClick={() => setActiveScreenshot(idx)}
               >
                 <img src={shot} alt="Screenshot" className="w-full h-full object-cover" />
@@ -88,7 +88,7 @@ const ProjectDetail = ({ project, onClose }: ProjectDetailProps) => {
            <div className="space-y-8">
              <div>
                <div className="flex items-center gap-3 mb-4">
-                 <span className="text-xs font-bold text-blue-400 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20">
+                 <span className="text-xs font-bold text-red-400 uppercase tracking-widest px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20">
                    {project.category}
                  </span>
                </div>
@@ -118,7 +118,7 @@ const ProjectDetail = ({ project, onClose }: ProjectDetailProps) => {
                <ul className="space-y-3">
                  {project.features.map((feature, i) => (
                    <li key={i} className="flex items-start gap-3 text-zinc-400 text-sm">
-                     <span className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                     <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
                      {feature}
                    </li>
                  ))}
