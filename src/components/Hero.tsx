@@ -3,11 +3,15 @@ import GeometryDash from './GeometryDash'
 
 const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false)
+  const [isReady, setIsReady] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
   const [showGame, setShowGame] = useState(false)
+  const [isHoveredCharacter, setIsHoveredCharacter] = useState(false)
 
   useEffect(() => {
     setIsLoaded(true)
+    const timer = setTimeout(() => setIsReady(true), 2000)
+    return () => clearTimeout(timer)
   }, [])
 
   return (
@@ -104,25 +108,45 @@ const Hero = () => {
                 </div>
 
                 {/* ================= 1. KARAKTER VOXEL (DIBELAKANG) ================= */}
-                <img
-                    src="/images/me.png" 
-                    alt="Voxel Character"
-                    onClick={() => setIsFocused(true)}
-                    className={`absolute z-10 top-[10%] md:top-[-15%] w-[150%] md:w-[150%] lg:w-[150%] max-w-none h-auto -rotate-6 cursor-pointer hover:scale-105 hover:brightness-110 transition-all duration-300 ease-out delay-0 md:delay-1000 ${
-                        isLoaded ? 'left-[-100%] opacity-100 translate-x-0' : 'left-[-50%] opacity-0 translate-x-12'
-                    }`}
-                />
+                <div 
+                    className="absolute z-10 inset-0 pointer-events-none"
+                    onMouseEnter={() => setIsHoveredCharacter(true)}
+                    onMouseLeave={() => setIsHoveredCharacter(false)}
+                >
+                    {/* Default Pose */}
+                    <img
+                        src="/images/me.png" 
+                        alt="Voxel Character"
+                        onClick={() => setIsFocused(true)}
+                        className={`absolute top-[10%] md:top-[-15%] w-[140%] md:w-[140%] lg:w-[140%] max-w-none h-auto -rotate-6 cursor-pointer hover:scale-105 hover:brightness-110 transition-all ease-in-out pointer-events-auto ${
+                            isReady ? 'duration-300 delay-0' : 'duration-1000 delay-0 md:delay-1000'
+                        } ${
+                            isLoaded ? 'left-[-100%] translate-x-0' : 'left-[-50%] opacity-0 translate-x-12'
+                        } ${isHoveredCharacter ? 'opacity-0' : 'opacity-100'}`}
+                    />
+                    {/* Waving Pose */}
+                    <img
+                        src="/images/me_hi.png" 
+                        alt="Voxel Character Waving"
+                        onClick={() => setIsFocused(true)}
+                        className={`absolute top-[10%] md:top-[-15%] w-[140%] md:w-[140%] lg:w-[140%] max-w-none h-auto -rotate-6 cursor-pointer hover:scale-105 hover:brightness-110 transition-all ease-in-out pointer-events-auto ${
+                            isReady ? 'duration-300 delay-0' : 'duration-1000 delay-0 md:delay-1000'
+                        } ${
+                            isLoaded ? 'left-[-100%] translate-x-0' : 'left-[-50%] opacity-0 translate-x-12'
+                        } ${isHoveredCharacter ? 'opacity-100' : 'opacity-0'}`}
+                    />
+                </div>
                 {/* ================================================================== */}
 
 
                 {/* 2. Glow Effect behind (Layer paling dasar) */}
-                <div className="absolute z-0 inset-0 bg-red-500/20 blur-[80px] rounded-full animate-pulse-glow" />
+                <div className="absolute z-0 inset-0 bg-red-500/80 blur-[60px] rounded-full animate-pulse-glow" />
 
                 {/* ================= 3. LINGKARAN PROFIL (DIDEPAN) ================== */}
                 {/* PENTING! z-index diubah jadi z-20 supaya dia menutupi bagian tengah karakter */}
-                <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-red-500/30 glass-premium glow-border z-20">
+                <div className="relative w-full aspect-[3/4] rounded-[24px] overflow-hidden border-2 border-red-500/40 glass-premium glow-border z-20 -translate-y-12 md:-translate-y-11">
                     <img
-                        src="../../public/images/myPhoto.jpeg"
+                        src="/images/myPhoto.jpeg"
                         alt="Muhammad Zaiimun Nabil"
                         className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700 transform hover:scale-105"
                     />
