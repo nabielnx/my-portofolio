@@ -24,17 +24,26 @@ const Projects = () => {
     <section ref={sectionRef} id="projects" className="py-24 md:py-40 px-6 max-w-7xl mx-auto">
       {/* Section Header */}
       <div 
-        className={`mb-20 md:mb-24 transition-all duration-700 ${
+        className={`mb-20 md:mb-24 transition-all duration-700 flex flex-col md:flex-row justify-between items-end gap-6 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
-        <h2 className="text-4xl md:text-6xl tracking-tighter mb-4">
-          SELECTED <br />
-          <span className="text-primary-gradient">PROJECTS</span>
-        </h2>
-        <p className="text-zinc-500 max-w-md">
-          A curated selection of work that showcases my expertise in building modern digital experiences.
-        </p>
+        <div>
+          <h2 className="text-4xl md:text-6xl tracking-tighter mb-4">
+            SELECTED <br />
+            <span className="text-primary-gradient">PROJECTS</span>
+          </h2>
+          <p className="text-zinc-500 max-w-md">
+            A curated selection of work that showcases my expertise in building modern digital experiences.
+          </p>
+        </div>
+
+        {/* Coding Character */}
+        <img 
+            src="/images/me_code.png" 
+            alt="Coding Character" 
+            className="w-40 md:w-56 lg:w-64 -mb-4 md:-mb-8 lg:-mb-12 filter drop-shadow-2xl hover:scale-105 transition-transform duration-300 pointer-events-none"
+        />
       </div>
 
       {/* Projects Grid */}

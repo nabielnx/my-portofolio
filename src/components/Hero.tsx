@@ -83,14 +83,11 @@ const Hero = () => {
 
                 {/* ================= 1. KARAKTER VOXEL (DIBELAKANG) ================= */}
                 <img
-                    src="/images/me.png" // Pastikan path file lo bener
+                    src="/images/me.png" 
                     alt="Voxel Character"
-                    // --- PENJELASAN PERUBAHAN ---
-                    // absolute z-10: PENTING! z-index rendah biar dia ada di belakang lingkaran.
-                    // left-1/2 -translate-x-1/2: Biar posisinya pas di tengah-tengah horizontal.
-                    // -top-20 md:-top-28: Menarik karakter ke atas supaya kepalanya nongol. Atur angka ini kalau kurang naik/turun.
-                    // w-56 h-56 md:w-80 md:h-80...: Ukuran DIPERBESAR biar badannya ketutup lingkaran tapi kepala & kaki kelihatan.
-                    className="absolute z-10 left-1/2 -translate-x-1/2 -top-20 md:-top-28 lg:-top-32 w-56 h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 transition-transform duration-300 group-hover:-translate-y-2 pointer-events-none"
+                    className={`absolute z-10 top-[10%] md:top-[-8%] w-[170%] md:w-[170%] lg:w-[170%] max-w-none h-auto -rotate-6 pointer-events-none transition-all duration-1000 delay-1000 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${
+                        isLoaded ? 'left-[-110%] opacity-100 translate-x-0' : 'left-[-50%] opacity-0 translate-x-12'
+                    }`}
                 />
                 {/* ================================================================== */}
 
