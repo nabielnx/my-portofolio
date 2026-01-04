@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 const About = () => {
   const [isVisible, setIsVisible] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   
   // Animated counter hook
@@ -52,6 +53,14 @@ const About = () => {
             <span className="text-primary-gradient">Muhammad Zaiimun Nabiil</span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-red-500 to-teal-500 rounded-full" />
+          
+          {/* Chill Character */}
+          <img 
+            src="/images/me_chill.png" 
+            alt="Chill Character" 
+            onClick={() => setIsFocused(true)}
+            className="w-64 md:w-80 lg:w-96 block ml-auto md:mr-10 -mt-12 md:-mt-24 rotate-12 filter hover:brightness-110 cursor-pointer transition-all duration-500"
+          />
         </div>
         
         {/* Right Column - Content */}
@@ -86,7 +95,7 @@ const About = () => {
               </p>
             </div>
             <div className="glass-premium p-6 rounded-2xl text-center glow-card group">
-              <p className="text-4xl md:text-5xl text-white font-bold mb-2 text-blue-gradient">
+              <p className="text-4xl md:text-5xl text-white font-bold mb-2 text-primary-gradient">
                 {deliveriesCount}+
               </p>
               <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-semibold group-hover:text-zinc-400 transition-colors">
@@ -96,6 +105,20 @@ const About = () => {
           </div>
         </div>
       </div>
+
+      {/* Character Focus Overlay */}
+      {isFocused && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-lg cursor-zoom-out animate-fade-in"
+          onClick={() => setIsFocused(false)}
+        >
+          <img 
+            src="/images/me_chill.png" 
+            alt="Character Focus"
+            className="h-[85vh] w-auto object-contain drop-shadow-[0_0_100px_rgba(20,184,166,0.4)] animate-lightbox-zoom"
+          />
+        </div>
+      )}
     </section>
   )
 }

@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
+import GeometryDash from './GeometryDash'
 
 const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
+  const [showGame, setShowGame] = useState(false)
 
   useEffect(() => {
     setIsLoaded(true)
@@ -81,12 +84,32 @@ const Hero = () => {
             {/* Ukuran wadah ini menentukan ukuran lingkaran profil */}
             <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 group">
 
+                {/* ================= 0. GAME MASCOT (ORBITING CUBE) ================= */}
+                <div 
+                    onClick={() => setShowGame(true)}
+                    className="absolute -top-4 -right-4 z-40 w-12 h-12 md:w-16 md:h-16 cursor-pointer group/mascot animate-mascot-float"
+                    title="Play Minigame!"
+                >
+                    {/* The Cube */}
+                    <div className="w-full h-full bg-red-500 rounded-lg shadow-[0_0_20px_rgba(239,68,68,0.5)] border-2 border-red-400 flex items-center justify-center transition-transform group-hover/mascot:scale-110">
+                        <div className="w-1/2 h-1/2 bg-red-300 rounded-sm opacity-50" />
+                        {/* Eyes */}
+                        <div className="absolute top-1/4 left-1/4 w-1/5 h-1/5 bg-white rounded-full" />
+                        <div className="absolute top-1/4 right-1/4 w-1/5 h-1/5 bg-white rounded-full" />
+                    </div>
+                    {/* Tooltip hint */}
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-teal-500 text-[10px] text-black font-bold rounded opacity-0 group-hover/mascot:opacity-100 transition-opacity whitespace-nowrap">
+                        PLAY ME!
+                    </div>
+                </div>
+
                 {/* ================= 1. KARAKTER VOXEL (DIBELAKANG) ================= */}
                 <img
                     src="/images/me.png" 
                     alt="Voxel Character"
-                    className={`absolute z-10 top-[10%] md:top-[-8%] w-[170%] md:w-[170%] lg:w-[170%] max-w-none h-auto -rotate-6 pointer-events-none transition-all duration-1000 delay-1000 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${
-                        isLoaded ? 'left-[-110%] opacity-100 translate-x-0' : 'left-[-50%] opacity-0 translate-x-12'
+                    onClick={() => setIsFocused(true)}
+                    className={`absolute z-10 top-[10%] md:top-[-15%] w-[150%] md:w-[150%] lg:w-[150%] max-w-none h-auto -rotate-6 cursor-pointer hover:scale-105 hover:brightness-110 transition-all duration-300 ease-out delay-0 md:delay-1000 ${
+                        isLoaded ? 'left-[-100%] opacity-100 translate-x-0' : 'left-[-50%] opacity-0 translate-x-12'
                     }`}
                 />
                 {/* ================================================================== */}
@@ -99,7 +122,7 @@ const Hero = () => {
                 {/* PENTING! z-index diubah jadi z-20 supaya dia menutupi bagian tengah karakter */}
                 <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-red-500/30 glass-premium glow-border z-20">
                     <img
-                        src="https://github.com/nabielnx.png"
+                        src="../../public/images/myPhoto.jpeg"
                         alt="Muhammad Zaiimun Nabil"
                         className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700 transform hover:scale-105"
                     />
@@ -120,6 +143,23 @@ const Hero = () => {
           100% { transform: translateY(300%); opacity: 0; }
         }
       `}</style>
+      
+      {/* Character Focus Overlay */}
+      {isFocused && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-lg cursor-zoom-out animate-fade-in"
+          onClick={() => setIsFocused(false)}
+        >
+          <img 
+            src="/images/me.png" 
+            alt="Character Focus"
+            className="h-[85vh] w-auto object-contain drop-shadow-[0_0_100px_rgba(239,68,68,0.4)] animate-lightbox-zoom"
+          />
+        </div>
+      )}
+
+      {/* Geometry Dash Minigame */}
+      {showGame && <GeometryDash onClose={() => setShowGame(false)} />}
     </section>
   )
 }

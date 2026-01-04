@@ -5,6 +5,7 @@ import ProjectDetail from './ProjectDetail'
 
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const sectionRef = useRef<HTMLElement>(null)
@@ -42,7 +43,8 @@ const Projects = () => {
         <img 
             src="/images/me_code.png" 
             alt="Coding Character" 
-            className="w-40 md:w-56 lg:w-64 -mb-4 md:-mb-8 lg:-mb-12 filter drop-shadow-2xl hover:scale-105 transition-transform duration-300 pointer-events-none"
+            onClick={() => setIsFocused(true)}
+            className="w-40 md:w-56 lg:w-80 -mb-4 md:-mb-8 lg:-mb-12 filter drop-shadow-2xl hover:scale-105 cursor-pointer transition-transform duration-300"
         />
       </div>
 
@@ -140,6 +142,20 @@ const Projects = () => {
            project={selectedProject} 
            onClose={() => setSelectedProject(null)} 
         />
+      )}
+
+      {/* Character Focus Overlay */}
+      {isFocused && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-lg cursor-zoom-out animate-fade-in"
+          onClick={() => setIsFocused(false)}
+        >
+          <img 
+            src="/images/me_code.png" 
+            alt="Character Focus"
+            className="h-[85vh] w-auto object-contain drop-shadow-[0_0_100px_rgba(239,68,68,0.4)] animate-lightbox-zoom"
+          />
+        </div>
       )}
     </section>
   )
