@@ -1,28 +1,17 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { projects } from '../data/projects'
 import type { Project } from '../data/projects'
 import ProjectDetail from './ProjectDetail'
+import { useInView } from '../hooks/useInView'
 
 const Projects = () => {
-  const [isVisible, setIsVisible] = useState(false)
+  const { ref, isVisible } = useInView({ threshold: 0.1 })
   const [isFocused, setIsFocused] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
-      },
-      { threshold: 0.1 }
-    )
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
-  }, [])
 
   return (
-    <section ref={sectionRef} id="projects" className="py-24 md:py-40 px-6 max-w-7xl mx-auto">
+    <section ref={ref} id="projects" className="py-24 md:py-40 px-6 max-w-7xl mx-auto">
       {/* Section Header */}
       <div 
         className={`mb-20 md:mb-24 transition-all duration-700 flex flex-col md:flex-row justify-between items-end gap-6 ${
@@ -53,7 +42,16 @@ const Projects = () => {
         {projects.map((project, index) => (
           <div 
             key={index} 
-            className={`group cursor-pointer transition-all duration-700 ${
+            role="button"
+            tabIndex={0}
+            aria-label={`View details for ${project.title}`}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                setSelectedProject(project)
+              }
+            }}
+            className={`group cursor-pointer transition-all duration-700 outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 rounded-2xl ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}
             style={{ transitionDelay: `${index * 150}ms` }}

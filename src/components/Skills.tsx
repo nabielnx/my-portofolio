@@ -1,35 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
-import { SiReact, SiTypescript, SiNodedotjs, SiPostgresql, SiAmazonwebservices, SiFigma, SiGithubactions } from 'react-icons/si'
-import { FaProjectDiagram } from 'react-icons/fa'
-
-const skills = [
-  { name: 'React Ecosystem', icon: SiReact },
-  { name: 'TypeScript', icon: SiTypescript },
-  { name: 'Node.js', icon: SiNodedotjs },
-  { name: 'PostgreSQL', icon: SiPostgresql },
-  { name: 'Cloud Architecture', icon: SiAmazonwebservices },
-  { name: 'Figma', icon: SiFigma },
-  { name: 'CI/CD Pipeline', icon: SiGithubactions },
-  { name: 'System Design', icon: FaProjectDiagram }
-]
+import { useInView } from '../hooks/useInView'
+import { SKILLS_DATA, TECH_STACK_AREAS } from '../data/constants'
 
 const Skills = () => {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
-      },
-      { threshold: 0.2 }
-    )
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
-  }, [])
+  const { ref, isVisible } = useInView({ threshold: 0.2 })
 
   return (
-    <section ref={sectionRef} id="skills" className="py-24 md:py-40 px-6 max-w-7xl mx-auto">
+    <section ref={ref} id="skills" className="py-24 md:py-40 px-6 max-w-7xl mx-auto">
       <div 
         className={`glass-premium p-10 md:p-16 lg:p-20 rounded-3xl glow-card transition-all duration-700 ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
@@ -52,7 +28,7 @@ const Skills = () => {
             
             {/* Tech Stack Highlight */}
             <div className="flex flex-wrap gap-3">
-              {['Frontend', 'Backend', 'DevOps'].map((area, i) => (
+              {TECH_STACK_AREAS.map((area, i) => (
                 <span 
                   key={area}
                   className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.15em] px-4 py-2 rounded-full border border-zinc-800 hover:border-red-500/50 hover:text-red-400 transition-all cursor-default"
@@ -66,7 +42,7 @@ const Skills = () => {
           
           {/* Right Column - Skills Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {skills.map((skill, index) => (
+            {SKILLS_DATA.map((skill, index) => (
               <div 
                 key={index} 
                 className={`group flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-transparent hover:border-red-500/20 transition-all duration-300 cursor-default ${

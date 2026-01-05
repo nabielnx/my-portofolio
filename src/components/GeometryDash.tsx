@@ -14,7 +14,7 @@ const CHAR_HEIGHT = 38
 const GeometryDash = ({ onClose }: { onClose: () => void }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [gameState, setGameState] = useState<'START' | 'PLAYING' | 'GAME_OVER'>('START')
-  const [score, setScore] = useState(0)
+  // REMOVED: const [score, setScore] = useState(0) -> Score is fully handled by ref and canvas
   
   const requestRef = useRef<number>(0)
   const lastTimeRef = useRef<number>(0)
@@ -109,7 +109,7 @@ const GeometryDash = ({ onClose }: { onClose: () => void }) => {
     // Reset posisi player dengan tinggi baru
     playerRef.current = { ...playerRef.current, y: canvas.height - 80 - CHAR_HEIGHT, dy: 0, grounded: true, rotation: 0 }
     obstaclesRef.current = []; scoreRef.current = 0; speedRef.current = INITIAL_SPEED; lastSpawnXRef.current = 0
-    setScore(0); setGameState('PLAYING')
+    setGameState('PLAYING')
   }
 
   const update = (time: number) => {
@@ -150,7 +150,7 @@ const GeometryDash = ({ onClose }: { onClose: () => void }) => {
           } else { setGameState('GAME_OVER'); return }
         }
       }
-      if (!obs.passed && obs.x + obs.width < player.x) { obs.passed = true; scoreRef.current += 1; setScore(scoreRef.current) }
+      if (!obs.passed && obs.x + obs.width < player.x) { obs.passed = true; scoreRef.current += 1; /* removed setScore */ }
       if (obs.x + obs.width < -600) obstaclesRef.current.splice(i, 1)
     }
 
@@ -248,7 +248,13 @@ const GeometryDash = ({ onClose }: { onClose: () => void }) => {
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md">
             <h2 className="text-6xl font-black text-white tracking-tighter uppercase">Head Dash</h2> <br />
             <p className="text-[#ef4444] font-bold animate-pulse font-mono uppercase tracking-widest text-sm mt-2">Space to Start</p>
-            <button onClick={onClose} className="bold mt-12 text-zinc-500 hover:text-white transition-all uppercase text-xs tracking-widest">Quit</button>
+            <button 
+              onClick={onClose} 
+              aria-label="Close Game"
+              className="bold mt-12 text-zinc-500 hover:text-white transition-all uppercase text-xs tracking-widest outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 rounded px-4 py-2"
+            >
+              Quit
+            </button>
           </div>
         )}
       </div>

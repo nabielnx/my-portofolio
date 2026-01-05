@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useInView } from '../hooks/useInView'
+import { HERO_TEXT } from '../data/constants'
 
 const About = () => {
-  const [isVisible, setIsVisible] = useState(false)
+  const { ref, isVisible } = useInView({ threshold: 0.2 })
   const [isFocused, setIsFocused] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
   
   // Animated counter hook
   const useCounter = (end: number, duration: number = 2000, isVisible: boolean) => {
@@ -28,19 +29,8 @@ const About = () => {
   const experienceCount = useCounter(5, 1500, isVisible)
   const deliveriesCount = useCounter(40, 2000, isVisible)
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
-      },
-      { threshold: 0.2 }
-    )
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
-  }, [])
-
   return (
-    <section ref={sectionRef} id="about" className="min-h-screen flex flex-col justify-center py-24 md:py-40 px-6 max-w-7xl mx-auto">
+    <section ref={ref} id="about" className="min-h-screen flex flex-col justify-center py-24 md:py-40 px-6 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-start">
         {/* Left Column - Title */}
         <div 
@@ -50,7 +40,7 @@ const About = () => {
         >
           <h2 className="text-4xl md:text-6xl tracking-tighter leading-tight text-balance">
             ABOUT <br />
-            <span className="text-primary-gradient">Muhammad Zaiimun Nabiil</span>
+            <span className="text-primary-gradient">{HERO_TEXT.name}</span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-red-500 to-teal-500 rounded-full" />
           
