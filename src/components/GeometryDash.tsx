@@ -1,333 +1,257 @@
 import { useEffect, useRef, useState } from 'react'
 
-const GRAVITY = 0.8
-const JUMP_FORCE = -12
-const SPEED = 7
-const OBSTACLE_INTERVAL = 1400 // ms
+// --- CALIBRATED CONSTANTS ---
+const GRAVITY = 0.63
+const JUMP_FORCE = -11.5 
+const INITIAL_SPEED = 5.2
+const COYOTE_TIME = 100 
 
-interface Particle {
-  x: number
-  y: number
-  vx: number
-  vy: number
-  life: number
-  color: string
-}
+// --- CHARACTER CONFIG ---
+// Ukuran baru karakter (lebih tinggi dari lebarnya)
+const CHAR_WIDTH = 24 
+const CHAR_HEIGHT = 38
 
 const GeometryDash = ({ onClose }: { onClose: () => void }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [gameState, setGameState] = useState<'START' | 'PLAYING' | 'GAME_OVER'>('START')
   const [score, setScore] = useState(0)
-  const requestRef = useRef<number | undefined>(undefined)
+  
+  const requestRef = useRef<number>(0)
   const lastTimeRef = useRef<number>(0)
-  const obstacleTimerRef = useRef<number>(0)
+  const scoreRef = useRef(0)
+  const speedRef = useRef(INITIAL_SPEED)
+  const keysRef = useRef<Record<string, boolean>>({}) 
+  const lastGroundedTimeRef = useRef<number>(0) 
+  const lastSpawnXRef = useRef<number>(0)
 
-  // Game State Refs (Mutable for loop performance)
+  // NOTE: Rotasi tidak lagi digunakan untuk visual, tapi state-nya dibiarkan
   const playerRef = useRef({
-    x: 100,
-    y: 300,
-    width: 30,
-    height: 30,
-    dy: 0,
-    grounded: false,
-    rotation: 0
+    x: 120, 
+    y: 0, 
+    width: CHAR_WIDTH,  // Update lebar
+    height: CHAR_HEIGHT, // Update tinggi
+    dy: 0, grounded: false, rotation: 0
   })
   
-  const obstaclesRef = useRef<{x: number, y: number, width: number, height: number, type: 'spike' | 'block'}[]>([])
-  const particlesRef = useRef<Particle[]>([])
-  const scoreRef = useRef(0)
+  const obstaclesRef = useRef<any[]>([])
 
-  const spawnObstacle = () => {
+  // --- MANUAL PATTERNS (Physics-Checked) ---
+  const patterns = [
+    {
+      name: 'TRIPLE_SPIKE',
+      width: 120,
+      parts: (x: number, gy: number) => [
+        { x: x, y: gy - 32, width: 32, height: 32, type: 'spike' },
+        { x: x + 35, y: gy - 32, width: 32, height: 32, type: 'spike' },
+        { x: x + 70, y: gy - 32, width: 32, height: 32, type: 'spike' }
+      ]
+    },
+    {
+      name: 'THE_BRIDGE',
+      width: 300,
+      parts: (x: number, gy: number) => [
+        { x: x, y: gy - 20, width: 300, height: 20, type: 'spike' }, 
+        { x: x + 60, y: gy - 85, width: 160, height: 20, type: 'block' } 
+      ]
+    },
+    {
+      name: 'THE_DECATHLON',
+      width: 1850, 
+      parts: (x: number, gy: number) => {
+        const steps = []
+        for (let i = 0; i < 10; i++) {
+          steps.push({
+            x: x + (i * 185), 
+            y: gy - ((i + 1) * 12), 
+            width: 85, height: (i + 1) * 12, type: 'block'
+          })
+        }
+        return steps
+      }
+    },
+    {
+      name: 'THE_SQUEEZE',
+      width: 250,
+      parts: (x: number, gy: number) => [
+        { x: x, y: gy - 165, width: 250, height: 25, type: 'block' }, 
+        { x: x + 100, y: gy - 32, width: 32, height: 32, type: 'spike' }
+      ]
+    }
+  ]
+
+  const spawnPattern = () => {
     const canvas = canvasRef.current
     if (!canvas) return
-    
-    // Randomly choose obstacle type or pattern
-    obstaclesRef.current.push({
-      x: canvas.width,
-      y: canvas.height - 100 - 30, // Ground level is height - 100
-      width: 30,
-      height: 30,
-      type: 'spike'
-    })
+    const groundY = canvas.height - 80
+    const pattern = patterns[Math.floor(Math.random() * patterns.length)]
+    const startX = Math.max(canvas.width, lastSpawnXRef.current + 400) 
+    obstaclesRef.current.push(...pattern.parts(startX, groundY))
+    lastSpawnXRef.current = startX + pattern.width
   }
 
-  const createParticles = (x: number, y: number, color: string, count: number = 10) => {
-    for (let i = 0; i < count; i++) {
-        particlesRef.current.push({
-            x,
-            y,
-            vx: (Math.random() - 0.5) * 10,
-            vy: (Math.random() - 0.5) * 10,
-            life: 1.0,
-            color
-        })
-    }
-  }
-
-  const resetGame = () => {
-    if (!canvasRef.current) return
-    playerRef.current = {
-      x: 100,
-      y: canvasRef.current.height - 100 - 30,
-      width: 30,
-      height: 30,
-      dy: 0,
-      grounded: true,
-      rotation: 0
-    }
-    obstaclesRef.current = []
-    particlesRef.current = []
-    scoreRef.current = 0
-    setScore(0)
-    setGameState('PLAYING')
-  }
-
-  const jump = () => {
-    if (gameState !== 'PLAYING') return
-    if (playerRef.current.grounded) {
-      playerRef.current.dy = JUMP_FORCE
-      playerRef.current.grounded = false
-      // Jump particles
-      createParticles(playerRef.current.x + 15, playerRef.current.y + 30, '#fff', 5)
-    }
-  }
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.code === 'Space' || e.code === 'ArrowUp') {
-      e.preventDefault()
-      if (gameState === 'START' || gameState === 'GAME_OVER') {
-        resetGame()
-      } else {
-        jump()
+  // --- ENGINE ---
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent, isDown: boolean) => {
+      if (['Space', 'ArrowUp'].includes(e.code)) {
+        e.preventDefault(); keysRef.current[e.code] = isDown
+        if (isDown && gameState !== 'PLAYING') resetGame()
       }
     }
-  }
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
+    const down = (e: KeyboardEvent) => handleKey(e, true)
+    const up = (e: KeyboardEvent) => handleKey(e, false)
+    window.addEventListener('keydown', down); window.addEventListener('keyup', up)
+    return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up) }
   }, [gameState])
+
+  const resetGame = () => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    // Reset posisi player dengan tinggi baru
+    playerRef.current = { ...playerRef.current, y: canvas.height - 80 - CHAR_HEIGHT, dy: 0, grounded: true, rotation: 0 }
+    obstaclesRef.current = []; scoreRef.current = 0; speedRef.current = INITIAL_SPEED; lastSpawnXRef.current = 0
+    setScore(0); setGameState('PLAYING')
+  }
 
   const update = (time: number) => {
     if (gameState !== 'PLAYING') return
-
     const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    const ctx = canvas?.getContext('2d')
+    if (!canvas || !ctx) return
 
-    const deltaTime = time - lastTimeRef.current
-    lastTimeRef.current = time
+    const deltaTime = time - lastTimeRef.current; lastTimeRef.current = time
+    const player = playerRef.current; const groundY = canvas.height - 80
 
-    const player = playerRef.current
-    const groundY = canvas.height - 100
-
-    // Physics
-    player.dy += GRAVITY
-    player.y += player.dy
-
-    // Rotation
-    if (!player.grounded) {
-        player.rotation += 5
-    } else {
-        // Snap to nearest 90
-        const rem = player.rotation % 90
-        if (rem !== 0) {
-            player.rotation = Math.round(player.rotation / 90) * 90
-        }
+    // JUMP
+    if (keysRef.current['Space'] || keysRef.current['ArrowUp']) {
+      if (player.grounded || (time - lastGroundedTimeRef.current < COYOTE_TIME)) {
+        player.dy = JUMP_FORCE; player.grounded = false; lastGroundedTimeRef.current = 0
+      }
     }
 
-    // Ground Collision
-    if (player.y + player.height > groundY) {
-      player.y = groundY - player.height
-      player.dy = 0
-      player.grounded = true
-    } else {
-        player.grounded = false // Just in case
+    player.dy += GRAVITY; player.y += player.dy
+    let isOnPlatform = false
+
+    if (obstaclesRef.current.length === 0 || lastSpawnXRef.current < canvas.width + 600) {
+      spawnPattern()
     }
 
-    // Obstacle Spawning
-    obstacleTimerRef.current += deltaTime || 16
-    if (obstacleTimerRef.current > OBSTACLE_INTERVAL) {
-        spawnObstacle()
-        obstacleTimerRef.current = 0
-    }
-
-    // Update Obstacles
     for (let i = obstaclesRef.current.length - 1; i >= 0; i--) {
-        const obs = obstaclesRef.current[i]
-        obs.x -= SPEED
+      const obs = obstaclesRef.current[i]; obs.x -= speedRef.current
+      // Hitbox disesuaikan dengan bentuk tubuh baru (lebih ramping)
+      const p = { l: player.x + 4, r: player.x + player.width - 4, t: player.y + 2, b: player.y + player.height - 1 }
+      const o = { l: obs.x, r: obs.x + obs.width, t: obs.y, b: obs.y + obs.height }
 
-        // Player Collision
-        if (
-            player.x < obs.x + obs.width &&
-            player.x + player.width > obs.x &&
-            player.y < obs.y + obs.height &&
-            player.y + player.height > obs.y - 10 // Collision forgiveness slightly
-        ) {
-            // Die
-            createParticles(player.x + 15, player.y + 15, '#ef4444', 30)
-            setGameState('GAME_OVER')
-            return
+      if (p.r > o.l && p.l < o.r && p.b > o.t && p.t < o.b) {
+        if (obs.type === 'spike') { setGameState('GAME_OVER'); return }
+        else {
+          if (player.dy >= 0 && p.b < o.t + 22) {
+            player.y = o.t - player.height; player.dy = 0; player.grounded = true
+            isOnPlatform = true; lastGroundedTimeRef.current = time
+          } else { setGameState('GAME_OVER'); return }
         }
-
-        // Score
-        if (obs.x + obs.width < player.x && !obs['passed' as keyof typeof obs]) {
-            scoreRef.current += 1
-            setScore(scoreRef.current)
-            // @ts-ignore
-            obs.passed = true
-        }
-
-        // Remove offscreen
-        if (obs.x + obs.width < 0) {
-            obstaclesRef.current.splice(i, 1)
-        }
+      }
+      if (!obs.passed && obs.x + obs.width < player.x) { obs.passed = true; scoreRef.current += 1; setScore(scoreRef.current) }
+      if (obs.x + obs.width < -600) obstaclesRef.current.splice(i, 1)
     }
 
-    // Update Particles
-    for (let i = particlesRef.current.length - 1; i >= 0; i--) {
-        const p = particlesRef.current[i]
-        p.x += p.vx
-        p.y += p.vy
-        p.life -= 0.02
-        if (p.life <= 0) particlesRef.current.splice(i, 1)
+    lastSpawnXRef.current -= speedRef.current
+
+    if (!isOnPlatform) {
+      if (player.y + player.height > groundY) {
+        player.y = groundY - player.height; player.dy = 0; player.grounded = true; lastGroundedTimeRef.current = time
+      } else { player.grounded = false }
     }
 
-    draw(ctx, canvas)
-    requestRef.current = requestAnimationFrame(update)
+    // LOGIKA ROTASI DIHAPUS DISINI. Player selalu tegak.
+
+    draw(ctx, canvas); requestRef.current = requestAnimationFrame(update)
   }
 
   const draw = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+    
+    // Background Liquid Glass Style
+    const bg = ctx.createLinearGradient(0, 0, 0, canvas.height)
+    bg.addColorStop(0, '#0f172a'); bg.addColorStop(1, '#1e293b')
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, canvas.width, canvas.height)
+    
+    // Grid Accents
+    ctx.strokeStyle = 'rgba(212, 163, 115, 0.05)'; ctx.lineWidth = 1
+    for(let i=0; i<canvas.width; i+=40) { ctx.beginPath(); ctx.moveTo(i - (scoreRef.current * 3 % 40), 0); ctx.lineTo(i - (scoreRef.current * 3 % 40), canvas.height); ctx.stroke() }
 
-    // Background Gradient (Dark)
-    const bgGradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
-    bgGradient.addColorStop(0, '#0f172a')
-    bgGradient.addColorStop(1, '#1e293b')
-    ctx.fillStyle = bgGradient
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    // Ground (Titanium/Brown)
+    ctx.fillStyle = '#050505ff'; ctx.fillRect(0, canvas.height - 80, canvas.width, 80)
+    ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 4; ctx.strokeRect(-2, canvas.height - 80, canvas.width + 4, 4)
 
-    // Visual Grid (Retro effect)
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)'
-    ctx.lineWidth = 1
-    const gridSize = 40
-    for(let x=0; x<canvas.width; x+=gridSize) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
-    }
-    for(let y=0; y<canvas.height; y+=gridSize) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
-    }
-
-    // Ground
-    ctx.fillStyle = '#1e293b'
-    ctx.fillRect(0, canvas.height - 100, canvas.width, 100)
-    // Ground Line (Neon)
-    ctx.beginPath()
-    ctx.moveTo(0, canvas.height - 100)
-    ctx.lineTo(canvas.width, canvas.height - 100)
-    ctx.strokeStyle = '#14b8a6' // Teal
-    ctx.lineWidth = 4
-    ctx.stroke()
-
-    // Player (Cube)
     const p = playerRef.current
-    ctx.save()
-    ctx.translate(p.x + p.width/2, p.y + p.height/2)
-    ctx.rotate((p.rotation * Math.PI) / 180)
-    ctx.fillStyle = '#ef4444' // Red
-    ctx.fillRect(-p.width/2, -p.height/2, p.width, p.height)
-    // Inner square
-    ctx.fillStyle = '#fca5a5'
-    ctx.fillRect(-p.width/4, -p.height/4, p.width/2, p.height/2)
-    ctx.restore()
+    
+    // === MENGGAMBAR KARAKTER (Tampak Samping, Tanpa Rotasi) ===
+    // Tidak ada ctx.save(), ctx.translate(), atau ctx.rotate()
+
+    const x = p.x;
+    const y = p.y;
+    const w = p.width;
+    const h = p.height;
+
+    // 1. Rambut Coklat (Top 20%)
+    ctx.fillStyle = '#5D4037'; // Coklat tua
+    ctx.fillRect(x, y, w, h * 0.2);
+
+    // 2. Muka Kulit (Next 15%) + Mata
+    ctx.fillStyle = '#FFCCBC'; // Warna kulit
+    ctx.fillRect(x, y + h * 0.2, w, h * 0.15);
+    // Mata (titik kecil di kanan)
+    ctx.fillStyle = '#1a1a1a';
+    ctx.fillRect(x + w - 6, y + h * 0.25, 4, 4);
+
+    // 3. Badan Persegi Panjang (Kaos Abu/Putih) (Next 30%)
+    ctx.fillStyle = '#ef4444'; // Abu-abu untuk baju
+    ctx.fillRect(x, y + h * 0.35, w, h * 0.3);
+
+    // 4. Jeans Biru (Next 25%)
+    ctx.fillStyle = '#1565C0'; // Biru jeans
+    ctx.fillRect(x, y + h * 0.65, w, h * 0.25);
+
+    // 5. Sepatu Hijau (Bottom 10%)
+    ctx.fillStyle = '#2E7D32'; // Hijau tua
+    ctx.fillRect(x, y + h * 0.9, w, h * 0.1);
+
 
     // Obstacles
     obstaclesRef.current.forEach(obs => {
-        ctx.save()
-        ctx.translate(obs.x, obs.y)
-        ctx.beginPath()
-        ctx.moveTo(0, obs.height)
-        ctx.lineTo(obs.width / 2, 0)
-        ctx.lineTo(obs.width, obs.height)
-        ctx.closePath()
-        ctx.fillStyle = '#14b8a6'
-        ctx.fill()
-        ctx.restore()
+      ctx.fillStyle = obs.type === 'spike' ? '#ef4444' : 'rgba(30, 41, 59, 0.8)'
+      if (obs.type === 'spike') {
+        ctx.beginPath(); ctx.moveTo(obs.x, obs.y + obs.height); ctx.lineTo(obs.x + obs.width / 2, obs.y); ctx.lineTo(obs.x + obs.width, obs.y + obs.height); ctx.fill()
+      } else {
+        ctx.fillRect(obs.x, obs.y, obs.width, obs.height)
+        ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 2; ctx.strokeRect(obs.x, obs.y, obs.width, obs.height)
+      }
     })
-
-    // Particles
-    particlesRef.current.forEach(p => {
-        ctx.globalAlpha = p.life
-        ctx.fillStyle = p.color
-        ctx.fillRect(p.x, p.y, 4, 4)
-        ctx.globalAlpha = 1.0
-    })
-
-    // Score
-    ctx.font = 'bold 40px "Outfit", sans-serif'
-    ctx.fillStyle = 'rgba(255,255,255,0.2)'
-    ctx.textAlign = 'center'
-    ctx.fillText(scoreRef.current.toString(), canvas.width / 2, canvas.height/2)
+    
+    // Glassy UI
+    ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.font = 'bold 22px "Outfit", sans-serif'; ctx.fillText(`SCORE: ${scoreRef.current}`, 30, 50)
   }
 
-  // Animation Loop Wrapper
   useEffect(() => {
     requestRef.current = requestAnimationFrame(update)
-    return () => {
-        if (requestRef.current) cancelAnimationFrame(requestRef.current)
-    }
+    return () => cancelAnimationFrame(requestRef.current)
   }, [gameState])
 
-  // Initial Draw
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (canvas) {
-        // Set fixed size for simplicity, or dynamic
-        canvas.width = 800
-        canvas.height = 400
-        const ctx = canvas.getContext('2d')
-        if (ctx) draw(ctx, canvas)
-    }
-  }, [])
-
-
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-lg animate-fade-in">
-        <div className="relative p-1 rounded-2xl bg-gradient-to-r from-red-500 to-teal-500 shadow-2xl animate-lightbox-zoom max-w-full">
-            <div className="relative bg-black rounded-xl overflow-hidden">
-                <canvas 
-                    ref={canvasRef} 
-                    className="block w-full max-w-[800px] h-auto cursor-pointer"
-                    onPointerDown={() => {
-                       if (gameState === 'START' || gameState === 'GAME_OVER') resetGame()
-                       else jump()
-                    }}
-                />
-                
-                {/* UI Overlays */}
-                <div className="absolute top-4 right-4 flex gap-2">
-                    <button onClick={onClose} className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition">
-                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
-                </div>
-
-                {gameState === 'START' && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm pointer-events-none">
-                        <h2 className="text-4xl font-bold text-white mb-2 tracking-tighter">GEOMETRY DASH</h2>
-                        <p className="text-teal-400 animate-pulse text-xl font-mono">PRESS SPACE OR CLICK TO START</p>
-                    </div>
-                )}
-
-                {gameState === 'GAME_OVER' && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm pointer-events-none">
-                        <h2 className="text-red-500 text-5xl font-black mb-2">GAME OVER</h2>
-                        <p className="text-white text-2xl mb-4">SCORE: {score}</p>
-                        <p className="text-zinc-400 font-mono">PRESS SPACE TO RESTART</p>
-                    </div>
-                )}
-            </div>
-        </div>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4">
+      <div className="relative bg-[#111] rounded-2xl overflow-hidden border-4 border-[#333] shadow-2xl">
+        <canvas ref={canvasRef} width={800} height={400} className="block w-full max-w-3xl h-auto" 
+          onPointerDown={() => { keysRef.current['Space'] = true; if(gameState !== 'PLAYING') resetGame() }} 
+          onPointerUp={() => keysRef.current['Space'] = false} 
+        />
+        {gameState !== 'PLAYING' && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md">
+            <h2 className="text-6xl font-black text-white tracking-tighter uppercase">Head Dash</h2> <br />
+            <p className="text-[#ef4444] font-bold animate-pulse font-mono uppercase tracking-widest text-sm mt-2">Space to Start</p>
+            <button onClick={onClose} className="bold mt-12 text-zinc-500 hover:text-white transition-all uppercase text-xs tracking-widest">Quit</button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
