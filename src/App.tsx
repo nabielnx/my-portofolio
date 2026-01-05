@@ -1,49 +1,18 @@
-import { useState, useEffect } from 'react'
-import Hero from './components/Hero.tsx'
-import About from './components/About.tsx'
-import Projects from './components/Projects.tsx'
-import Skills from './components/Skills.tsx'
-import Contact from './components/Contact.tsx'
+import Hero from './components/Hero'
+import About from './components/About'
+import Projects from './components/Projects'
+import Skills from './components/Skills'
+import Contact from './components/Contact'
+import { useScrollSpy } from './hooks/useScrollSpy'
+import { NAV_ITEMS } from './data/constants'
+import { SEO } from './components/SEO'
 
 function App() {
-  const [activeSection, setActiveSection] = useState<string>('hero')
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['hero', 'about', 'projects', 'skills', 'contact']
-      let current = 'hero'
-      for (const section of sections) {
-        const element = document.getElementById(section)
-        if (element) {
-          const rect = element.getBoundingClientRect()
-          if (rect.top <= 150) current = section
-        }
-      }
-      setActiveSection(current)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  // Scroll reveal effect
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('active')
-          }
-        })
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    )
-
-    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
+  const activeSection = useScrollSpy(NAV_ITEMS, 150)
 
   return (
     <div className="relative min-h-screen font-sans selection:bg-primary/30">
+      <SEO />
       {/* Noise Texture */}
       <div className="noise-bg" />
       
@@ -57,7 +26,7 @@ function App() {
       {/* Premium Navigation */}
       <nav className="fixed bottom-6 left-4 right-4 md:top-8 md:bottom-auto md:left-1/2 md:-translate-x-1/2 z-50 glass-premium px-4 md:px-8 py-3 rounded-2xl md:rounded-full">
         <div className="flex justify-around md:justify-center md:gap-10 items-center">
-          {['hero', 'about', 'projects', 'skills', 'contact'].map((item) => (
+          {NAV_ITEMS.map((item) => (
             <a
               key={item}
               href={`#${item}`}

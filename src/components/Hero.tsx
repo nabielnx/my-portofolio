@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import GeometryDash from './GeometryDash'
+import { HERO_TEXT } from '../data/constants'
 
 const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -27,14 +28,14 @@ const Hero = () => {
                   isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
                 }`}
               >
-                I'm
+                {HERO_TEXT.greeting}
               </span>
               <span 
                 className={`block text-primary-gradient transition-all duration-1000 delay-300 ${
                   isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
                 }`}
               >
-                Game Developer
+                {HERO_TEXT.title}
               </span>
             </h1>
 
@@ -44,7 +45,7 @@ const Hero = () => {
               }`}
             >
                <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-white/90 text-balance">
-                Muhammad Zaiimun Nabil
+                {HERO_TEXT.name}
                </h2>
             </div>
           </div>
@@ -55,8 +56,7 @@ const Hero = () => {
               isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            A full-stack developer crafting high-performance, 
-            minimalist digital experiences with precision and care.
+            {HERO_TEXT.description}
           </p>
           
           {/* Premium CTA Buttons */}
@@ -69,13 +69,13 @@ const Hero = () => {
               href="#projects" 
               className="group relative px-8 py-3.5 bg-white text-black text-sm font-bold rounded-xl btn-glow overflow-hidden transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]"
             >
-              <span className="relative z-10">VIEW WORK</span>
+              <span className="relative z-10">{HERO_TEXT.actions.primary}</span>
             </a>
             <a 
               href="#contact" 
               className="group px-8 py-3.5 glass-premium text-white text-sm font-bold rounded-xl transition-all duration-300 glow-card hover:border-red-500/30"
             >
-              <span className="group-hover:text-red-400 transition-colors">LET'S CONNECT</span>
+              <span className="group-hover:text-red-400 transition-colors">{HERO_TEXT.actions.secondary}</span>
             </a>
           </div>
         </div>
@@ -85,13 +85,16 @@ const Hero = () => {
             isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
         }`}>
             {/* Container Utama (Relative Parent) */}
-            {/* Ukuran wadah ini menentukan ukuran lingkaran profil */}
             <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 group">
 
                 {/* ================= 0. GAME MASCOT (ORBITING CUBE) ================= */}
                 <div 
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Play Geometry Dash Minigame"
                     onClick={() => setShowGame(true)}
-                    className="absolute -top-4 -right-4 z-40 w-12 h-12 md:w-16 md:h-16 cursor-pointer group/mascot animate-mascot-float"
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setShowGame(true) }}
+                    className="absolute -top-4 -right-4 z-40 w-12 h-12 md:w-16 md:h-16 cursor-pointer group/mascot animate-mascot-float focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 rounded-lg"
                     title="Play Minigame!"
                 >
                     {/* The Cube */}
@@ -137,7 +140,6 @@ const Hero = () => {
                     />
                 </div>
                 {/* ================================================================== */}
-
 
                 {/* 2. Glow Effect behind (Layer paling dasar) */}
                 <div className="absolute z-0 inset-0 bg-red-500/80 blur-[60px] rounded-full animate-pulse-glow" />
