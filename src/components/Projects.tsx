@@ -1,32 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
-
-const projects = [
-  {
-    title: 'Nalar Architecture',
-    category: 'Full Stack',
-    description: 'Scalable cloud-native enterprise management system with real-time analytics.',
-    tags: ['React', 'Node.js', 'PostgreSQL', 'AWS'],
-    color: 'from-blue-500/20 to-purple-500/20'
-  },
-  {
-    title: 'Zenith UI Kit',
-    category: 'Design System',
-    description: 'A professional-grade component library for modern SaaS applications.',
-    tags: ['Tailwind', 'Next.js', 'Figma'],
-    color: 'from-emerald-500/20 to-cyan-500/20'
-  },
-  {
-    title: 'Flux AI',
-    category: 'Deep Learning',
-    description: 'Real-time content analysis platform using transformer models.',
-    tags: ['Python', 'TensorFlow', 'Azure'],
-    color: 'from-orange-500/20 to-rose-500/20'
-  }
-]
+import { projects } from '../data/projects'
+import type { Project } from '../data/projects'
+import ProjectDetail from './ProjectDetail'
 
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const sectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -41,20 +22,30 @@ const Projects = () => {
   }, [])
 
   return (
-    <section ref={sectionRef} id="projects" className="py-32 md:py-40 px-6 max-w-7xl mx-auto">
+    <section ref={sectionRef} id="projects" className="py-24 md:py-40 px-6 max-w-7xl mx-auto">
       {/* Section Header */}
       <div 
-        className={`mb-20 md:mb-24 transition-all duration-700 ${
+        className={`mb-20 md:mb-24 transition-all duration-700 flex flex-col md:flex-row justify-between items-end gap-6 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
-        <h2 className="text-4xl md:text-6xl tracking-tighter mb-4">
-          SELECTED <br />
-          <span className="text-blue-gradient">PROJECTS</span>
-        </h2>
-        <p className="text-zinc-500 max-w-md">
-          A curated selection of work that showcases my expertise in building modern digital experiences.
-        </p>
+        <div>
+          <h2 className="text-4xl md:text-6xl tracking-tighter mb-4">
+            SELECTED <br />
+            <span className="text-primary-gradient">PROJECTS</span>
+          </h2>
+          <p className="text-zinc-500 max-w-md">
+            A curated selection of work that showcases my expertise in building modern digital experiences.
+          </p>
+        </div>
+
+        {/* Coding Character */}
+        <img 
+            src="/images/me_code.png" 
+            alt="Coding Character" 
+            onClick={() => setIsFocused(true)}
+            className="w-40 md:w-56 lg:w-80 -mb-4 md:-mb-8 lg:-mb-12 filter drop-shadow-2xl hover:scale-105 cursor-pointer transition-transform duration-300"
+        />
       </div>
 
       {/* Projects Grid */}
@@ -68,6 +59,7 @@ const Projects = () => {
             style={{ transitionDelay: `${index * 150}ms` }}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
+            onClick={() => setSelectedProject(project)}
           >
             {/* Project Card */}
             <div className={`
@@ -75,14 +67,24 @@ const Projects = () => {
               glass-premium card-hover
               ${hoveredIndex === index ? 'glow-border' : ''}
             `}>
-              {/* Gradient Background */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+              {/* Project Image */}
+              <img 
+                src={project.image} 
+                alt={project.title}
+                className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+              />
+
+              {/* Gradient Overlay */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-40 group-hover:opacity-60 transition-opacity duration-500 mix-blend-overlay`} />
               
+              {/* Dark Gradient for Text Legibility (if needed) */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+
               {/* Grid Pattern */}
-              <div className="absolute inset-0 opacity-20"
+              <div className="absolute inset-0 opacity-20 mix-blend-overlay"
                 style={{
-                  backgroundImage: `linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                                    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)`,
+                  backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                                    linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
                   backgroundSize: '30px 30px'
                 }}
               />
@@ -105,18 +107,18 @@ const Projects = () => {
             {/* Project Info */}
             <div className="space-y-3 px-1">
               <div className="flex items-center gap-3">
-                <span className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.15em]">
+                <span className="text-[10px] font-bold text-red-400 uppercase tracking-[0.15em]">
                   {project.category}
                 </span>
                 <div className="flex-1 h-px bg-zinc-800" />
               </div>
               
-              <h3 className="text-xl md:text-2xl tracking-tight font-bold group-hover:text-blue-400 transition-colors duration-300">
+              <h3 className="text-xl md:text-2xl tracking-tight font-bold group-hover:text-red-400 transition-colors duration-300">
                 {project.title}
               </h3>
               
               <p className="text-zinc-500 text-sm leading-relaxed group-hover:text-zinc-400 transition-colors">
-                {project.description}
+                {project.shortDescription}
               </p>
               
               {/* Tags */}
@@ -124,7 +126,7 @@ const Projects = () => {
                 {project.tags.map(tag => (
                   <span 
                     key={tag} 
-                    className="text-[10px] font-semibold text-zinc-600 uppercase tracking-tight px-2 py-1 rounded-md bg-white/5 group-hover:bg-blue-500/10 group-hover:text-blue-400/80 transition-all"
+                    className="text-[10px] font-semibold text-zinc-600 uppercase tracking-tight px-2 py-1 rounded-md bg-white/5 group-hover:bg-red-500/10 group-hover:text-red-400/80 transition-all"
                   >
                     {tag}
                   </span>
@@ -134,6 +136,27 @@ const Projects = () => {
           </div>
         ))}
       </div>
+      {/* Project Detail Overlay */}
+      {selectedProject && (
+        <ProjectDetail 
+           project={selectedProject} 
+           onClose={() => setSelectedProject(null)} 
+        />
+      )}
+
+      {/* Character Focus Overlay */}
+      {isFocused && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-lg cursor-zoom-out animate-fade-in"
+          onClick={() => setIsFocused(false)}
+        >
+          <img 
+            src="/images/me_code.png" 
+            alt="Character Focus"
+            className="h-[85vh] w-auto object-contain drop-shadow-[0_0_100px_rgba(239,68,68,0.4)] animate-lightbox-zoom"
+          />
+        </div>
+      )}
     </section>
   )
 }

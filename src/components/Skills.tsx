@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
+import { SiReact, SiTypescript, SiNodedotjs, SiPostgresql, SiAmazonwebservices, SiFigma, SiGithubactions } from 'react-icons/si'
+import { FaProjectDiagram } from 'react-icons/fa'
 
 const skills = [
-  { name: 'React Ecosystem', icon: '⚛️' },
-  { name: 'TypeScript', icon: '📘' },
-  { name: 'Node.js', icon: '🟢' },
-  { name: 'PostgreSQL', icon: '🐘' },
-  { name: 'Cloud Architecture', icon: '☁️' },
-  { name: 'Figma', icon: '🎨' },
-  { name: 'CI/CD Pipeline', icon: '🔄' },
-  { name: 'System Design', icon: '📐' }
+  { name: 'React Ecosystem', icon: SiReact },
+  { name: 'TypeScript', icon: SiTypescript },
+  { name: 'Node.js', icon: SiNodedotjs },
+  { name: 'PostgreSQL', icon: SiPostgresql },
+  { name: 'Cloud Architecture', icon: SiAmazonwebservices },
+  { name: 'Figma', icon: SiFigma },
+  { name: 'CI/CD Pipeline', icon: SiGithubactions },
+  { name: 'System Design', icon: FaProjectDiagram }
 ]
 
 const Skills = () => {
@@ -27,7 +29,7 @@ const Skills = () => {
   }, [])
 
   return (
-    <section ref={sectionRef} id="skills" className="py-24 md:py-32 px-6 max-w-6xl mx-auto">
+    <section ref={sectionRef} id="skills" className="py-24 md:py-40 px-6 max-w-7xl mx-auto">
       <div 
         className={`glass-premium p-10 md:p-16 lg:p-20 rounded-3xl glow-card transition-all duration-700 ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
@@ -40,9 +42,9 @@ const Skills = () => {
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
             }`}
           >
-            <h2 className="text-4xl md:text-5xl tracking-tighter mb-6 leading-tight">
+            <h2 className="text-4xl md:text-5xl tracking-tighter mb-6 leading-tight text-balance">
               CORE <br />
-              <span className="text-blue-gradient">EXPERTISE</span>
+              <span className="text-primary-gradient">EXPERTISE</span>
             </h2>
             <p className="text-zinc-400 text-base leading-relaxed tracking-tight mb-8">
               A comprehensive toolkit tailored for modern web development and high-stakes production environments.
@@ -53,7 +55,7 @@ const Skills = () => {
               {['Frontend', 'Backend', 'DevOps'].map((area, i) => (
                 <span 
                   key={area}
-                  className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.15em] px-4 py-2 rounded-full border border-zinc-800 hover:border-blue-500/50 hover:text-blue-400 transition-all cursor-default"
+                  className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.15em] px-4 py-2 rounded-full border border-zinc-800 hover:border-red-500/50 hover:text-red-400 transition-all cursor-default"
                   style={{ animationDelay: `${i * 100}ms` }}
                 >
                   {area}
@@ -67,15 +69,14 @@ const Skills = () => {
             {skills.map((skill, index) => (
               <div 
                 key={index} 
-                className={`group flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-transparent hover:border-blue-500/20 transition-all duration-300 cursor-default ${
+                className={`group flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-transparent hover:border-red-500/20 transition-all duration-300 cursor-default ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 }`}
                 style={{ transitionDelay: `${300 + index * 80}ms` }}
               >
-                {/* Animated Dot */}
-                <div className="relative">
-                  <div className="w-2.5 h-2.5 rounded-full bg-blue-500 group-hover:animate-pulse" />
-                  <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-blue-500 opacity-0 group-hover:opacity-50 group-hover:animate-ping" />
+                {/* Icon Wrapper */}
+                <div className="p-2 rounded-lg bg-red-500/10 text-red-400 group-hover:text-white group-hover:bg-red-500 transition-all duration-300">
+                  <skill.icon size={20} strokeWidth={1.5} />
                 </div>
                 
                 {/* Skill Name */}
@@ -83,9 +84,9 @@ const Skills = () => {
                   {skill.name}
                 </span>
                 
-                {/* Icon */}
-                <span className="ml-auto text-lg opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:scale-110">
-                  {skill.icon}
+                {/* Arrow Indicator (replaces old icon) */}
+                <span className="ml-auto opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
+                   <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
                 </span>
               </div>
             ))}
