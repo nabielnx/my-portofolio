@@ -172,7 +172,7 @@ const GeometryDash = ({ onClose }: { onClose: () => void }) => {
     
     // Background Liquid Glass Style
     const bg = ctx.createLinearGradient(0, 0, 0, canvas.height)
-    bg.addColorStop(0, '#0f172a'); bg.addColorStop(1, '#1e293b')
+    bg.addColorStop(0, '#000000ff'); bg.addColorStop(1, '#1e293b')
     ctx.fillStyle = bg; ctx.fillRect(0, 0, canvas.width, canvas.height)
     
     // Grid Accents

@@ -22,7 +22,32 @@ const Hero = () => {
              {/* Game Overlay */}
              {showGame && <GeometryDash onClose={() => setShowGame(false)} />}
 
-            <div className="z-10 max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="relative z-10 max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
+                
+                {/* ================= GEOMETRY DASH MASCOT (Perimeter Patrol) ================= */}
+                <div 
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Play Geometry Dash Minigame"
+                    onClick={() => setShowGame(true)}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setShowGame(true) }}
+                    className="absolute z-50 w-12 h-12 md:w-16 md:h-16 cursor-pointer group/mascot animate-mascot-perimeter focus:outline-none focus:ring-2 focus:ring-red-400 rounded-lg pointer-events-auto"
+                    style={{ top: '-20px', left: '-60px'}} // Origin point for CSS animation
+                    title="Play Minigame!"
+                >
+                    {/* The Cube */}
+                    <div className="w-full h-full bg-red-500 rounded-lg shadow-[0_0_20px_rgba(239,68,68,0.5)] border-2 border-red-400 flex items-center justify-center transition-transform group-hover/mascot:scale-110">
+                        <div className="w-1/2 h-1/2 bg-red-300 rounded-sm opacity-50" />
+                        {/* Eyes */}
+                        <div className="absolute top-1/4 left-1/4 w-1/5 h-1/5 bg-white rounded-full" />
+                        <div className="absolute top-1/4 right-1/4 w-1/5 h-1/5 bg-white rounded-full" />
+                    </div>
+                    {/* Tooltip hint */}
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-teal-500 text-[10px] text-black font-bold rounded opacity-0 group-hover/mascot:opacity-100 transition-opacity whitespace-nowrap">
+                        PLAY ME!
+                    </div>
+                </div>
+                {/* ========================================================================= */}
                 
                 {/* Left Column - Text Content */}
                 <div className="flex flex-col gap-8 order-2 md:order-1 text-center md:text-left">
@@ -109,29 +134,6 @@ const Hero = () => {
                 }`}>
                     {/* Container Utama (Relative Parent) */}
                     <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 group">
-
-                        {/* ================= 0. GAME MASCOT (ORBITING CUBE) ================= */}
-                        <div 
-                            role="button"
-                            tabIndex={0}
-                            aria-label="Play Geometry Dash Minigame"
-                            onClick={() => setShowGame(true)}
-                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setShowGame(true) }}
-                            className="absolute -top-4 -right-4 z-40 w-12 h-12 md:w-16 md:h-16 cursor-pointer group/mascot animate-mascot-float focus:outline-none focus:ring-2 focus:ring-red-400 rounded-lg"
-                            title="Play Minigame!"
-                        >
-                            {/* The Cube */}
-                            <div className="w-full h-full bg-red-500 rounded-lg shadow-[0_0_20px_rgba(239,68,68,0.5)] border-2 border-red-400 flex items-center justify-center transition-transform group-hover/mascot:scale-110">
-                                <div className="w-1/2 h-1/2 bg-red-300 rounded-sm opacity-50" />
-                                {/* Eyes */}
-                                <div className="absolute top-1/4 left-1/4 w-1/5 h-1/5 bg-white rounded-full" />
-                                <div className="absolute top-1/4 right-1/4 w-1/5 h-1/5 bg-white rounded-full" />
-                            </div>
-                            {/* Tooltip hint */}
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-teal-500 text-[10px] text-black font-bold rounded opacity-0 group-hover/mascot:opacity-100 transition-opacity whitespace-nowrap">
-                                PLAY ME!
-                            </div>
-                        </div>
 
                         {/* ================= 1. KARAKTER VOXEL (DIBELAKANG) ================= */}
                         <div 
