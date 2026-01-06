@@ -167,13 +167,20 @@ const GeometryDash = ({ onClose }: { onClose: () => void }) => {
     draw(ctx, canvas); requestRef.current = requestAnimationFrame(update)
   }
 
+  // Cache Gradient
+  const bgGradientRef = useRef<CanvasGradient | null>(null)
+
   const draw = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     
-    // Background Liquid Glass Style
-    const bg = ctx.createLinearGradient(0, 0, 0, canvas.height)
-    bg.addColorStop(0, '#000000ff'); bg.addColorStop(1, '#1e293b')
-    ctx.fillStyle = bg; ctx.fillRect(0, 0, canvas.width, canvas.height)
+    // Background Liquid Glass Style (Optimized: Created once)
+    if (!bgGradientRef.current) {
+        const bg = ctx.createLinearGradient(0, 0, 0, canvas.height)
+        bg.addColorStop(0, '#000000ff'); bg.addColorStop(1, '#1e293b')
+        bgGradientRef.current = bg
+    }
+    
+    ctx.fillStyle = bgGradientRef.current!; ctx.fillRect(0, 0, canvas.width, canvas.height)
     
     // Grid Accents
     ctx.strokeStyle = 'rgba(212, 163, 115, 0.05)'; ctx.lineWidth = 1

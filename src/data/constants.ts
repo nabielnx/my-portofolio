@@ -4,10 +4,10 @@ import { FaProjectDiagram } from 'react-icons/fa'
 export const NAV_ITEMS = ['hero', 'about', 'projects', 'skills', 'contact'] as const
 
 export const HERO_TEXT = {
-  greeting: "I'm",
-  title: "Game Developer",
+  greeting: "I'm ",
+  title: "NabielNx",
   name: "Muhammad Zaiimun Nabil",
-  description: "A full-stack developer crafting high-performance, minimalist digital experiences with precision and care.",
+  description: "A Computer Science student (Semester 4) passionate about game development, software engineering, and modern web technologies. I love building practical, scalable, and impactful digital products.",
   actions: {
     primary: "VIEW WORK",
     secondary: "LET'S CONNECT"
@@ -26,3 +26,18 @@ export const SKILLS_DATA = [
 ]
 
 export const TECH_STACK_AREAS = ['Frontend', 'Backend', 'DevOps']
+
+export const JOURNEY_DATA = [
+  {
+    period: '2024 - Present',
+    title: 'Soegijapranata Catholic University',
+    role: 'Computer Science Student',
+    description: 'Currently pursuing a Bachelor\'s degree in Computer Science, focusing on Software Engineering and Game Development.'
+  },
+  {
+    period: '2021 - 2024',
+    title: 'SMA Negeri 1 Godong',
+    role: 'Student',
+    description: 'Focusing on STEM or related fields'
+  },
+]

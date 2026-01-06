@@ -43,8 +43,8 @@ function App() {
       </nav>
 
       <main>
-        <Hero />
-        <About />
+        <Hero/>
+        <About/>
         <Projects />
         <Skills />
         <Contact />
