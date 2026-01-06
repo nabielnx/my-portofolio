@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 
 // --- CALIBRATED CONSTANTS ---
-const GRAVITY = 0.63
-const JUMP_FORCE = -11.5 
+const GRAVITY = 0.67
+const JUMP_FORCE = -11.3 
 const INITIAL_SPEED = 5.2
 const COYOTE_TIME = 100 
 
@@ -119,6 +119,7 @@ const GeometryDash = ({ onClose }: { onClose: () => void }) => {
     if (!canvas || !ctx) return
 
     const deltaTime = time - lastTimeRef.current; lastTimeRef.current = time
+    const timeScale = Math.min(deltaTime / 16.67, 4) // Normalize to 60 FPS
     const player = playerRef.current; const groundY = canvas.height - 80
 
     // JUMP
@@ -128,7 +129,10 @@ const GeometryDash = ({ onClose }: { onClose: () => void }) => {
       }
     }
 
-    player.dy += GRAVITY; player.y += player.dy
+    // Apply Physics with Time Scale
+    player.dy += GRAVITY * timeScale
+    player.y += player.dy * timeScale
+    
     let isOnPlatform = false
 
     if (obstaclesRef.current.length === 0 || lastSpawnXRef.current < canvas.width + 600) {
@@ -136,7 +140,11 @@ const GeometryDash = ({ onClose }: { onClose: () => void }) => {
     }
 
     for (let i = obstaclesRef.current.length - 1; i >= 0; i--) {
-      const obs = obstaclesRef.current[i]; obs.x -= speedRef.current
+      const obs = obstaclesRef.current[i]; 
+      
+      // Move Obstacle
+      obs.x -= speedRef.current * timeScale
+
       // Hitbox disesuaikan dengan bentuk tubuh baru (lebih ramping)
       const p = { l: player.x + 4, r: player.x + player.width - 4, t: player.y + 2, b: player.y + player.height - 1 }
       const o = { l: obs.x, r: obs.x + obs.width, t: obs.y, b: obs.y + obs.height }
@@ -154,7 +162,7 @@ const GeometryDash = ({ onClose }: { onClose: () => void }) => {
       if (obs.x + obs.width < -600) obstaclesRef.current.splice(i, 1)
     }
 
-    lastSpawnXRef.current -= speedRef.current
+    lastSpawnXRef.current -= speedRef.current * timeScale
 
     if (!isOnPlatform) {
       if (player.y + player.height > groundY) {
