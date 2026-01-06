@@ -33,7 +33,7 @@ const Projects = () => {
             src="/images/me_code.png" 
             alt="Coding Character" 
             onClick={() => setIsFocused(true)}
-            className="w-40 md:w-56 lg:w-80 -mb-4 md:-mb-8 lg:-mb-12 filter drop-shadow-2xl hover:scale-105 cursor-pointer transition-transform duration-300"
+            className="w-40 md:w-56 lg:w-80 -mb-4 md:-mb-8 lg:-mb-12 filter drop-shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:scale-105 cursor-pointer transition-transform duration-300"
         />
       </div>
 

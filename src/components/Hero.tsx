@@ -58,7 +58,7 @@ const Hero = () => {
                                     isLoaded ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-12 blur-sm'
                                 }`}
                             >
-                                {HERO_TEXT.greeting}
+                                {HERO_TEXT.greeting} 
                             </span>
                             <span 
                                 className={`block text-primary-gradient transition-all duration-1000 delay-300 ${
@@ -146,7 +146,7 @@ const Hero = () => {
                                 src="/images/me.png" 
                                 alt="Voxel Character"
                                 onClick={() => setIsFocused(true)}
-                                className={`absolute top-[10%] md:top-[-15%] w-[140%] md:w-[140%] lg:w-[140%] max-w-none h-auto -rotate-6 cursor-pointer hover:scale-105 hover:brightness-110 transition-all ease-in-out pointer-events-auto ${
+                                className={`absolute top-[10%] md:top-[-15%] w-[140%] md:w-[140%] lg:w-[140%] max-w-none h-auto -rotate-6 cursor-pointer hover:scale-105 hover:brightness-110 drop-shadow-[0_0_20px_rgba(239,68,68,0.4)] transition-all ease-in-out pointer-events-auto ${
                                     isReady ? 'duration-300 delay-0' : 'duration-1000 delay-0 md:delay-1000'
                                 } ${
                                     isLoaded ? 'left-[-100%] translate-x-0' : 'left-[-50%] opacity-0 translate-x-12'
@@ -157,7 +157,7 @@ const Hero = () => {
                                 src="/images/me_hi.png" 
                                 alt="Voxel Character Waving"
                                 onClick={() => setIsFocused(true)}
-                                className={`absolute top-[10%] md:top-[-15%] w-[140%] md:w-[140%] lg:w-[140%] max-w-none h-auto -rotate-6 cursor-pointer hover:scale-105 hover:brightness-110 transition-all ease-in-out pointer-events-auto ${
+                                className={`absolute top-[10%] md:top-[-15%] w-[140%] md:w-[140%] lg:w-[140%] max-w-none h-auto -rotate-6 cursor-pointer hover:scale-105 hover:brightness-110 drop-shadow-[0_0_20px_rgba(239,68,68,0.4)] transition-all ease-in-out pointer-events-auto ${
                                     isReady ? 'duration-300 delay-0' : 'duration-1000 delay-0 md:delay-1000'
                                 } ${
                                     isLoaded ? 'left-[-100%] translate-x-0' : 'left-[-50%] opacity-0 translate-x-12'
