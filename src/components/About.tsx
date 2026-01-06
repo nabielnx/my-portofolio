@@ -11,25 +11,24 @@ const About = () => {
       
       {/* Header with Character */}
       <div 
-        className={`flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0 mb-20 transition-all duration-700 ${
+        className={`flex flex-row items-center justify-center gap-0 mb-20 transition-all duration-700 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
-        {/* Character - Left of Text on Desktop */}
         {/* Character - Left of Text on Desktop */}
         <img 
             src="/images/me_chill.png" 
             alt="Chill Character" 
             onClick={() => setIsFocused(true)}
-            className="w-64 md:w-80 lg:w-[27rem] md:-mr-16 rotate-[-1deg] filter drop-shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:scale-105 cursor-pointer transition-all duration-300 grayscale-[0.2] hover:grayscale-0 relative z-10"
+            className="w-47 sm:w-48 md:w-80 lg:w-[24rem] -mr-4 md:-mr-16 rotate-[-1deg] filter drop-shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:scale-105 cursor-pointer transition-all duration-300 grayscale-[0.2] hover:grayscale-0 relative z-10"
         />
 
         {/* Text */}
-        <div className="text-center md:text-left relative z-0">
-            <h2 className="text-6xl md:text-8xl tracking-tighter leading-tight text-balance mb-4">
+        <div className="text-left relative z-0">
+            <h2 className="text-4xl sm:text-5xl md:text-8xl tracking-tighter leading-tight text-balance mb-2 md:mb-4">
             ABOUT <br /> MY <span className="text-primary-gradient">JOURNEY</span>
             </h2>
-            <p className="text-zinc-500 max-w-lg mx-auto md:mx-0 text-lg">
+            <p className="text-zinc-500 max-w-lg text-sm md:text-lg">
             The path that led me to where I am today.
             </p>
         </div>

@@ -17,7 +17,7 @@ const Hero = () => {
     }, [])
 
     return (
-        <section id="hero" className="min-h-screen flex flex-col items-center justify-center relative px-6 overflow-hidden">
+        <section id="hero" className="min-h-screen flex flex-col items-center justify-center relative px-6 pt-24 md:pt-0 overflow-hidden">
              
              {/* Game Overlay */}
              {showGame && <GeometryDash onClose={() => setShowGame(false)} />}
@@ -31,8 +31,8 @@ const Hero = () => {
                     aria-label="Play Geometry Dash Minigame"
                     onClick={() => setShowGame(true)}
                     onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setShowGame(true) }}
-                    className="absolute z-50 w-12 h-12 md:w-16 md:h-16 cursor-pointer group/mascot animate-mascot-perimeter focus:outline-none focus:ring-2 focus:ring-red-400 rounded-lg pointer-events-auto"
-                    style={{ top: '-20px', left: '-60px'}} // Origin point for CSS animation
+                    className="absolute z-50 w-12 h-12 md:w-16 md:h-16 cursor-pointer group/mascot animate-mascot-mobile-idle md:animate-mascot-perimeter focus:outline-none focus:ring-2 focus:ring-red-400 rounded-lg pointer-events-auto left-[270px] md:left-[-60px]"
+                    style={{ top: '-20px' }} // Adjusted: Responsive left positioning handled by classes
                     title="Play Minigame!"
                 >
                     {/* The Cube */}
@@ -134,11 +134,11 @@ const Hero = () => {
                     isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
                 }`}>
                     {/* Container Utama (Relative Parent) */}
-                    <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 group">
+                    <div className="relative w-48 h-48 md:w-80 md:h-80 lg:w-96 lg:h-96 group">
 
-                        {/* ================= 1. KARAKTER VOXEL (DIBELAKANG) ================= */}
+                        {/* ================= 1. KARAKTER VOXEL (DIBELAKANG Desktop, DEPAN Mobile) ================= */}
                         <div 
-                            className="absolute z-10 inset-0 pointer-events-none"
+                            className="absolute z-30 md:z-10 inset-0 pointer-events-none"
                             onMouseEnter={() => setIsHoveredCharacter(true)}
                             onMouseLeave={() => setIsHoveredCharacter(false)}
                         >
@@ -147,10 +147,10 @@ const Hero = () => {
                                 src="/images/me.png" 
                                 alt="Voxel Character"
                                 onClick={() => setIsFocused(true)}
-                                className={`absolute top-[10%] md:top-[-15%] w-[140%] md:w-[140%] lg:w-[140%] max-w-none h-auto -rotate-6 cursor-pointer hover:scale-105 hover:brightness-110 drop-shadow-[0_0_20px_rgba(239,68,68,0.4)] transition-all ease-in-out pointer-events-auto ${
+                                className={`absolute top-[10%] md:top-[-15%] w-[135%] md:w-[135%] lg:w-[135%] max-w-none h-auto -rotate-6 cursor-pointer hover:scale-105 hover:brightness-110 drop-shadow-[0_0_20px_rgba(239,68,68,0.4)] transition-all ease-in-out pointer-events-auto ${
                                     isReady ? 'duration-300 delay-0' : 'duration-1000 delay-0 md:delay-1000'
                                 } ${
-                                    isLoaded ? 'left-[-100%] translate-x-0' : 'left-[-50%] opacity-0 translate-x-12'
+                                    isLoaded ? 'left-[-72%] md:left-[-100%] translate-x-0' : 'left-[-50%] opacity-0 translate-x-12'
                                 } ${isHoveredCharacter ? 'opacity-0' : 'opacity-100'}`}
                             />
                             {/* Waving Pose */}
@@ -158,10 +158,10 @@ const Hero = () => {
                                 src="/images/me_hi.png" 
                                 alt="Voxel Character Waving"
                                 onClick={() => setIsFocused(true)}
-                                className={`absolute top-[10%] md:top-[-15%] w-[140%] md:w-[140%] lg:w-[140%] max-w-none h-auto -rotate-6 cursor-pointer hover:scale-105 hover:brightness-110 drop-shadow-[0_0_20px_rgba(239,68,68,0.4)] transition-all ease-in-out pointer-events-auto ${
+                                className={`absolute top-[10%] md:top-[-15%] w-[135%] md:w-[135%] lg:w-[135%] max-w-none h-auto -rotate-6 cursor-pointer hover:scale-105 hover:brightness-110 drop-shadow-[0_0_20px_rgba(239,68,68,0.4)] transition-all ease-in-out pointer-events-auto ${
                                     isReady ? 'duration-300 delay-0' : 'duration-1000 delay-0 md:delay-1000'
                                 } ${
-                                    isLoaded ? 'left-[-100%] translate-x-0' : 'left-[-50%] opacity-0 translate-x-12'
+                                    isLoaded ? 'left-[-72%] md:left-[-100%] translate-x-0' : 'left-[-50%] opacity-0 translate-x-12'
                                 } ${isHoveredCharacter ? 'opacity-100' : 'opacity-0'}`}
                             />
                         </div>

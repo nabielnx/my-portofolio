@@ -20,10 +20,16 @@
      Clockwise: Top-Left -> Top-Right -> Bottom-Right -> Bottom-Left -> Top-Left
   */
   --animate-mascot-perimeter: mascot-perimeter 15s linear infinite;
+  --animate-mascot-mobile-idle: mascot-mobile-idle 3s ease-in-out infinite;
 
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-15px); }
+  }
+
+  @keyframes mascot-mobile-idle {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(-5deg); }
   }
 
   @keyframes mascot-perimeter {
