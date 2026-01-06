@@ -9,18 +9,30 @@ const About = () => {
   return (
     <section ref={ref} id="about" className="min-h-screen flex flex-col justify-center py-24 md:py-40 px-6 max-w-7xl mx-auto">
       
-      {/* Header */}
+      {/* Header with Character */}
       <div 
-        className={`text-center mb-20 transition-all duration-700 ${
+        className={`flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0 mb-20 transition-all duration-700 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
-        <h2 className="text-4xl md:text-6xl tracking-tighter leading-tight text-balance mb-4">
-          MY <span className="text-primary-gradient">JOURNEY</span>
-        </h2>
-        <p className="text-zinc-500 max-w-lg mx-auto">
-          The path that led me to where I am today.
-        </p>
+        {/* Character - Left of Text on Desktop */}
+        {/* Character - Left of Text on Desktop */}
+        <img 
+            src="/images/me_chill.png" 
+            alt="Chill Character" 
+            onClick={() => setIsFocused(true)}
+            className="w-64 md:w-80 lg:w-[27rem] md:-mr-16 rotate-[-1deg] filter drop-shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:scale-105 cursor-pointer transition-all duration-300 grayscale-[0.2] hover:grayscale-0 relative z-10"
+        />
+
+        {/* Text */}
+        <div className="text-center md:text-left relative z-0">
+            <h2 className="text-6xl md:text-8xl tracking-tighter leading-tight text-balance mb-4">
+            ABOUT <br /> MY <span className="text-primary-gradient">JOURNEY</span>
+            </h2>
+            <p className="text-zinc-500 max-w-lg mx-auto md:mx-0 text-lg">
+            The path that led me to where I am today.
+            </p>
+        </div>
       </div>
 
       {/* Timeline Container */}
@@ -97,19 +109,7 @@ const About = () => {
         </div>
       </div>
 
-      {/* Decorative Character (Bottom Right) */}
-      <div 
-         className={`mt-6 flex justify-center md:justify-end transition-all duration-1000 delay-1000 ${
-             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-         }`}
-      >
-         <img 
-            src="/images/me_chill.png" 
-            alt="Chill Character" 
-            onClick={() => setIsFocused(true)}
-            className="w-72 md:w-96 filter drop-shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:scale-105 cursor-pointer transition-all duration-300 grayscale-[0.2] hover:grayscale-0"
-         />
-      </div>
+
 
       {/* Character Focus Overlay */}
       {isFocused && (

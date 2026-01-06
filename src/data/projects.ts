@@ -14,14 +14,14 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    title: 'Nalar Architecture',
-    category: 'Full Stack',
+    title: 'Hook Life',
+    category: 'Team Project',
     shortDescription: 'Scalable cloud-native enterprise management system with real-time analytics.',
     longDescription: 'Nalar Architecture is a comprehensive enterprise solution designed to handle high-frequency data processing and real-time analytics. Built with a microservices-first approach, it ensures 99.99% uptime and horizontal scalability. The system integrates seamless data visualization pipelines and robust role-based access control.',
-    tags: ['React', 'Node.js', 'PostgreSQL', 'AWS'],
+    tags: ['Unity', 'C#',],
     color: 'from-red-500/20 to-teal-500/20',
     image: 'https://placehold.co/1920x1080/1e293b/475569?text=Nalar+Main',
-    demoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', // Placeholder
+    demoUrl: 'https://zaiimunnabil1.itch.io/hook-life', // Placeholder
     features: [
       'Real-time WebSocket data streaming',
       'Customizable dashboard widgets',
@@ -40,11 +40,11 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'Zenith UI Kit',
+    title: 'PakMan Motor',
     category: 'Design System',
     shortDescription: 'A professional-grade component library for modern SaaS applications.',
     longDescription: 'Zenith UI is a meticulously crafted component library focused on accessibility and performance. It provides a comprehensive set of React components styled with Tailwind CSS, fully themed and dark-mode ready out of the box. Designed for developers who value aesthetics without compromising on speed.',
-    tags: ['Tailwind', 'Next.js', 'Figma'],
+    tags: ['Laravel', 'Rust', 'Figma'],
     color: 'from-teal-500/20 to-cyan-500/20',
     image: 'https://placehold.co/1920x1080/0f172a/334155?text=Zenith+UI+Kit',
     features: [
@@ -59,7 +59,7 @@ export const projects: Project[] = [
     ]
   },
   {
-    title: 'Flux AI',
+    title: 'Nalar',
     category: 'Deep Learning',
     shortDescription: 'Real-time content analysis platform using transformer models.',
     longDescription: 'Flux AI leverages advanced transformer models to provide real-time content moderation and sentiment analysis. The platform exposes a low-latency API capable of processing thousands of requests per second, making it ideal for social media platforms and large-scale communities.',
