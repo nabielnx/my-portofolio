@@ -32,7 +32,7 @@ export const JOURNEY_DATA = [
     period: '2024 - Present',
     title: 'Soegijapranata Catholic University',
     role: 'Computer Science Student',
-    description: 'Currently pursuing a Bachelor\'s degree in Computer Science, focusing on Software Engineering and Game Development.'
+    description: 'Undergraduate student in Computer Science, focusing on Software Engineering and Game Development.'
   },
   {
     period: '2021 - 2024',
