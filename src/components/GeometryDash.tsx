@@ -286,9 +286,12 @@ const GeometryDash = ({ onClose }: { onClose: () => void }) => {
             </p>
             <button 
               onClick={(e) => {
-                e.stopPropagation() // Prevent triggering game start when clicking quit
+                e.stopPropagation()
                 onClose()
-              }} 
+              }}
+              // Stop propagation aggressively on touch/pointer down so parent processing doesn't start
+              onPointerDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
               aria-label="Close Game"
               className="bold mt-12 text-zinc-500 hover:text-white transition-all uppercase text-xs tracking-widest outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 rounded px-4 py-2 pointer-events-auto"
             >
