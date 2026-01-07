@@ -22,6 +22,8 @@ const Hero = () => {
              {/* Game Overlay */}
              {showGame && <GeometryDash onClose={() => setShowGame(false)} />}
 
+             {/* Main Hero Content - Hidden when game is playing to save GPU resources */}
+             {!showGame && (
             <div className="relative z-10 max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
                 
                 {/* ================= GEOMETRY DASH MASCOT (Perimeter Patrol) ================= */}
@@ -187,6 +189,7 @@ const Hero = () => {
                     </div>
                 </div>
             </div>
+            )}
 
             <style>{`
                 @keyframes slide-down {
