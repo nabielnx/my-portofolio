@@ -9,11 +9,22 @@ const Hero = () => {
     const [isFocused, setIsFocused] = useState(false)
     const [showGame, setShowGame] = useState(false)
     const [isHoveredCharacter, setIsHoveredCharacter] = useState(false)
+    const [isAutoWaving, setIsAutoWaving] = useState(false)
 
     useEffect(() => {
         setIsLoaded(true)
         const timer = setTimeout(() => setIsReady(true), 2000)
-        return () => clearTimeout(timer)
+        
+        // Auto-wave loop for mobile/idle interaction
+        const waveInterval = setInterval(() => {
+            setIsAutoWaving(true)
+            setTimeout(() => setIsAutoWaving(false), 2000) // Wave for 2s
+        }, 2000) // Every 8s
+
+        return () => {
+            clearTimeout(timer)
+            clearInterval(waveInterval)
+        }
     }, [])
 
     return (
@@ -153,7 +164,7 @@ const Hero = () => {
                                     isReady ? 'duration-300 delay-0' : 'duration-1000 delay-0 md:delay-1000'
                                 } ${
                                     isLoaded ? 'left-[-72%] md:left-[-100%] translate-x-0' : 'left-[-50%] opacity-0 translate-x-12'
-                                } ${isHoveredCharacter ? 'opacity-0' : 'opacity-100'}`}
+                                } ${(!isHoveredCharacter && !isAutoWaving) ? 'opacity-100' : 'opacity-0'}`}
                             />
                             {/* Waving Pose */}
                             <img
@@ -164,7 +175,7 @@ const Hero = () => {
                                     isReady ? 'duration-300 delay-0' : 'duration-1000 delay-0 md:delay-1000'
                                 } ${
                                     isLoaded ? 'left-[-72%] md:left-[-100%] translate-x-0' : 'left-[-50%] opacity-0 translate-x-12'
-                                } ${isHoveredCharacter ? 'opacity-100' : 'opacity-0'}`}
+                                } ${(isHoveredCharacter || isAutoWaving) ? 'opacity-100' : 'opacity-0'}`}
                             />
                         </div>
                         {/* ================================================================== */}
