@@ -8,7 +8,7 @@ interface ProjectDetailProps {
 
 const ProjectDetail = ({ project, onClose }: ProjectDetailProps) => {
   const [isClosing, setIsClosing] = useState(false)
-  const [activeScreenshot, setActiveScreenshot] = useState(0)
+  const [selectedMediaIndex, setSelectedMediaIndex] = useState(-1) // -1 = Main Demo/Image, 0+ = Screenshot Index
 
   useEffect(() => {
     // Lock body scroll
@@ -49,35 +49,55 @@ const ProjectDetail = ({ project, onClose }: ProjectDetailProps) => {
 
         {/* Left / Top Section - Visuals (Scrollable on mobile) */}
         <div className="w-full md:w-3/5 h-[40vh] md:h-full bg-black/40 overflow-y-auto no-scrollbar relative order-1 md:order-1 hardware-accelerated overscroll-contain">
-          {/* Main Display (Video or Image) */}
-          <div className="aspect-video w-full relative group">
-             {project.demoUrl ? (
-                <iframe 
-                  src={project.demoUrl} 
-                  className="w-full h-full object-cover"
-                  title="Project Demo"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+          {/* Main Display Area */}
+          <div className="aspect-video w-full relative group bg-black/20">
+             {selectedMediaIndex === -1 ? (
+                // Show Main Demo (Video/Iframe/Image)
+                project.demoUrl?.endsWith('.mp4') ? (
+                  <video 
+                    src={project.demoUrl} 
+                    className="w-full h-full object-cover"
+                    controls
+                    autoPlay
+                    loop
+                    muted
+                  />
+                ) : project.demoUrl && !project.demoUrl.includes('youtube.com') ? ( // Simple check for iframe compatibility if needed, though most use embeds
+                   <iframe 
+                     src={project.demoUrl} 
+                     className="w-full h-full object-cover"
+                     title="Project Demo"
+                     frameBorder="0"
+                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                     allowFullScreen
+                   />
+                ) : (
+                   <img 
+                     src={project.image} 
+                     alt={project.title}
+                     className="w-full h-full object-cover"
+                   />
+                )
              ) : (
+                // Show Selected Screenshot
                 <img 
-                  src={project.image} 
-                  alt={project.title}
-                  className="w-full h-full object-cover"
+                  src={project.screenshots[selectedMediaIndex]} 
+                  alt={`Screenshot ${selectedMediaIndex + 1}`}
+                  className="w-full h-full object-contain bg-black/50" // Contain to show full screenshot without cropping
                 />
              )}
           </div>
 
-          {/* Screenshots Grid */}
-          <div className="p-6 grid grid-cols-2 gap-4">
+          {/* Media Grid */}
+          <div className="p-6 grid grid-cols-3 gap-3">
+            {/* Screenshots */}
             {project.screenshots.map((shot, idx) => (
               <div 
                 key={idx} 
-                className={`aspect-video rounded-xl overflow-hidden cursor-pointer border-2 transition-all ${activeScreenshot === idx ? 'border-red-500' : 'border-transparent opacity-60 hover:opacity-100'}`}
-                onClick={() => setActiveScreenshot(idx)}
+                className={`aspect-video rounded-xl overflow-hidden cursor-pointer border-2 transition-all ${selectedMediaIndex === idx ? 'border-red-500 ring-2 ring-red-500/20' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                onClick={() => setSelectedMediaIndex(idx)}
               >
-                <img src={shot} alt="Screenshot" className="w-full h-full object-cover" />
+                <img src={shot} alt={`Screenshot ${idx + 1}`} className="w-full h-full object-cover" />
               </div>
             ))}
           </div>
@@ -124,6 +144,23 @@ const ProjectDetail = ({ project, onClose }: ProjectDetailProps) => {
                  ))}
                </ul>
              </div>
+
+             {/* External Link */}
+             {project.externalLink && (
+                <div>
+                   <a 
+                     href={project.externalLink}
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-colors"
+                   >
+                     {project.externalLinkText || 'View Project'}
+                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                     </svg>
+                   </a>
+                </div>
+             )}
 
              {/* Tech Stack */}
              <div>

@@ -1,11 +1,11 @@
-import { SiReact, SiTypescript, SiNodedotjs, SiPostgresql, SiAmazonwebservices, SiFigma, SiGithubactions } from 'react-icons/si'
-import { FaProjectDiagram } from 'react-icons/fa'
+import { SiReact, SiTypescript, SiLaravel, SiMysql, SiUnity, SiTailwindcss, SiBootstrap, SiFigma } from 'react-icons/si'
+
 
 export const NAV_ITEMS = ['hero', 'about', 'projects', 'skills', 'contact'] as const
 
 export const HERO_TEXT = {
   greeting: "I'm ",
-  title: "NabielNx",
+  title: "Just a Student",
   name: "Muhammad Zaiimun Nabil",
   description: "A Computer Science student (Semester 4) passionate about game development, software engineering, and modern web technologies. I love building practical, scalable, and impactful digital products.",
   actions: {
@@ -16,16 +16,16 @@ export const HERO_TEXT = {
 
 export const SKILLS_DATA = [
   { name: 'React Ecosystem', icon: SiReact },
+  { name: 'Laravel', icon: SiLaravel },
+  { name: 'Unity Engine', icon: SiUnity },
   { name: 'TypeScript', icon: SiTypescript },
-  { name: 'Node.js', icon: SiNodedotjs },
-  { name: 'PostgreSQL', icon: SiPostgresql },
-  { name: 'Cloud Architecture', icon: SiAmazonwebservices },
-  { name: 'Figma', icon: SiFigma },
-  { name: 'CI/CD Pipeline', icon: SiGithubactions },
-  { name: 'System Design', icon: FaProjectDiagram }
+  { name: 'MySQL', icon: SiMysql },
+  { name: 'Tailwind CSS', icon: SiTailwindcss },
+  { name: 'Bootstrap', icon: SiBootstrap },
+  { name: 'Figma', icon: SiFigma }
 ]
 
-export const TECH_STACK_AREAS = ['Frontend', 'Backend', 'DevOps']
+export const TECH_STACK_AREAS = ['Frontend', 'Backend', 'Game Dev']
 
 export const JOURNEY_DATA = [
   {

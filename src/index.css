@@ -141,6 +141,14 @@
       background-position: 40% 50%;
     }
   }
+
+  /* Infinite Scroll Animation */
+  --animate-infinite-scroll: infinite-scroll 40s linear infinite;
+
+  @keyframes infinite-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); } 
+  }
 }
 
 @layer base {

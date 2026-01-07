@@ -7,6 +7,8 @@ export interface Project {
   color: string
   image: string
   demoUrl?: string
+  externalLink?: string
+  externalLinkText?: string
   screenshots: string[]
   features: string[]
   stats?: { label: string; value: string }[]
@@ -14,58 +16,66 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    title: 'Hook Life',
-    category: 'Team Project',
-    shortDescription: 'Scalable cloud-native enterprise management system with real-time analytics.',
-    longDescription: 'Nalar Architecture is a comprehensive enterprise solution designed to handle high-frequency data processing and real-time analytics. Built with a microservices-first approach, it ensures 99.99% uptime and horizontal scalability. The system integrates seamless data visualization pipelines and robust role-based access control.',
-    tags: ['Unity', 'C#',],
-    color: 'from-red-500/20 to-teal-500/20',
-    image: 'https://placehold.co/1920x1080/1e293b/475569?text=Nalar+Main',
-    demoUrl: 'https://zaiimunnabil1.itch.io/hook-life', // Placeholder
+    title: 'PakMan Motor',
+    category: 'Web Ecommerce',
+    shortDescription: 'A comprehensive ecommerce platform for motorcycle spare parts.',
+    longDescription: 'PakMan Motor is a full-featured ecommerce solution designed for motorcycle spare parts retail. It offers a seamless shopping experience with product categorization, wishlist functionality, and secure checkout. The platform includes a powerful Admin Dashboard and a built-in Point of Sale (POS) system (Cashier) to streamline inventory management and offline sales.',
+    tags: ['Laravel', 'MySQL', 'Bootstrap'],
+    color: 'from-teal-500/20 to-cyan-500/20',
+    image: '/images/Projects/PakMan_Motor/profile.png',
+    externalLink: 'https://pakmanmotor.shop/',
+    externalLinkText: 'Visit Website',
     features: [
-      'Real-time WebSocket data streaming',
-      'Customizable dashboard widgets',
-      'Automated reporting pipelines',
-      'Multi-tenant architecture'
+      'Comprehensive Admin Dashboard',
+      'Integrated POS System',
+      'Wishlist & Shopping Cart',
+      'Product Categorization'
     ],
     screenshots: [
-      'https://placehold.co/1920x1080/1e293b/64748b?text=Dashboard+View',
-      'https://placehold.co/1920x1080/0f172a/334155?text=Analytics+Panel',
-      'https://placehold.co/1920x1080/334155/94a3b8?text=Mobile+Responsive'
-    ],
-    stats: [
-      { label: 'Uptime', value: '99.9%' },
-      { label: 'Daily Users', value: '50k+' },
-      { label: 'Latency', value: '<50ms' }
+      '/images/Projects/PakMan_Motor/first.png',
+      '/images/Projects/PakMan_Motor/login.png',
+      '/images/Projects/PakMan_Motor/product.png',
+      '/images/Projects/PakMan_Motor/category.png',
+      '/images/Projects/PakMan_Motor/wishlist.png',
+      '/images/Projects/PakMan_Motor/checkout.png',
+      '/images/Projects/PakMan_Motor/admin.png',
+      '/images/Projects/PakMan_Motor/POS.png',
     ]
   },
   {
-    title: 'PakMan Motor',
-    category: 'Design System',
-    shortDescription: 'A professional-grade component library for modern SaaS applications.',
-    longDescription: 'Zenith UI is a meticulously crafted component library focused on accessibility and performance. It provides a comprehensive set of React components styled with Tailwind CSS, fully themed and dark-mode ready out of the box. Designed for developers who value aesthetics without compromising on speed.',
-    tags: ['Laravel', 'Rust', 'Figma'],
-    color: 'from-teal-500/20 to-cyan-500/20',
-    image: 'https://placehold.co/1920x1080/0f172a/334155?text=Zenith+UI+Kit',
+    title: 'Hook Life',
+    category: 'Game Development',
+    shortDescription: 'An exciting game project available on Itch.io.',
+    longDescription: 'This is a placeholder for your game description. Replace this text with details about your game, its mechanics, and the experience you created.',
+    tags: ['Unity', 'C#', 'Game Design'],
+    color: 'from-purple-500/20 to-pink-500/20',
+    image: '/images/Projects/Hook_Life/profil.png',
+    externalLink: 'https://zaiimunnabil1.itch.io/hook-life',
+    externalLinkText: 'Play on Itch.io',
     features: [
-      'WCAG 2.1 AA Compliant',
-      '30+ Custom Hooks',
-      'Automatic Dark Mode',
-      'Figma Design File Included'
+      'Engaging Gameplay Loop',
+      'Original Soundtrack',
+      'Unique Art Style',
+      'Challenging Levels'
     ],
     screenshots: [
-      'https://placehold.co/1920x1080/064e3b/10b981?text=Component+Gallery',
-      'https://placehold.co/1920x1080/065f46/34d399?text=Theming+Engine'
+      '/images/Projects/Hook_Life/first.png',
+      '/images/Projects/Hook_Life/sec.png',
+      '/images/Projects/Hook_Life/third.png'
+    ],
+    stats: [
+      { label: 'Rating', value: '5.0' },
+      { label: 'Downloads', value: '7' }
     ]
   },
   {
     title: 'Nalar',
     category: 'Deep Learning',
-    shortDescription: 'Real-time content analysis platform using transformer models.',
+    shortDescription: 'On Progress',
     longDescription: 'Flux AI leverages advanced transformer models to provide real-time content moderation and sentiment analysis. The platform exposes a low-latency API capable of processing thousands of requests per second, making it ideal for social media platforms and large-scale communities.',
-    tags: ['Python', 'TensorFlow', 'Azure'],
+    tags: ['TypeScript', 'Grok API'],
     color: 'from-red-500/20 to-orange-500/20',
-    image: 'https://placehold.co/1920x1080/312e81/4338ca?text=Flux+AI+Core',
+    image: 'https://placehold.co/1920x1080/312e81/4338ca?text=Nalar',
     demoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
     features: [
       'BERT-based Sentiment Analysis',
@@ -78,8 +88,31 @@ export const projects: Project[] = [
       'https://placehold.co/1920x1080/5b21b6/c4b5fd?text=API+Playground'
     ],
     stats: [
-      { label: 'Accuracy', value: '98.5%' },
-      { label: 'Req/Sec', value: '2500' }
+      { label: 'Accuracy', value: '0%' },
+      { label: 'Req/Sec', value: '0' }
+    ]
+  },
+  {
+    title: 'Project Alpha',
+    category: 'Future Concept',
+    shortDescription: 'Experimental interface design for next-gen inputs.',
+    longDescription: 'Project Alpha is a conceptual playground for exploring new user interaction models, including gesture-based controls and neural interface mockups. It serves as a testbed for bleeding-edge UI patterns.',
+    tags: ['Prototype', 'WebGL', 'Three.js'],
+    color: 'from-amber-500/20 to-yellow-500/20',
+    image: 'https://placehold.co/1920x1080/1e293b/475569?text=Project+Alpha',
+    features: [
+      'Neural Interface Mockup',
+      'Gesture Recognition',
+      '3D Data Visualization',
+      'Holographic UI Elements'
+    ],
+    screenshots: [
+      'https://placehold.co/1920x1080/1e293b/475569?text=Interface+Demo',
+      'https://placehold.co/1920x1080/334155/64748b?text=Settings+Panel'
+    ],
+    stats: [
+      { label: 'Progress', value: '45%' },
+      { label: 'Concept', value: 'v0.1' }
     ]
   }
 ]
