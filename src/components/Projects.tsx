@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { projects } from '../data/projects'
 import type { Project } from '../data/projects'
 import ProjectDetail from './ProjectDetail'
@@ -10,8 +10,45 @@ const Projects = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
 
+  // Create refs for animation control
+  const sliderRef = React.useRef<HTMLDivElement>(null)
+  const isPaused = React.useRef(false)
+  const animationRef = React.useRef<number | null>(null)
+  
+  // State for enabling scroll snap only during manual interaction
+  const [isSnapping, setIsSnapping] = React.useState(false)
+
+  // Tripling projects is usually sufficient for most screens
+  // Reduces DOM nodes compared to 4x, improving performance
+  const extendedProjects = [...projects, ...projects, ...projects]
+
+  React.useEffect(() => {
+    const animate = () => {
+      // Only auto-scroll if NOT paused and NOT snapping
+      if (!isPaused.current && !isSnapping && sliderRef.current) {
+        const slider = sliderRef.current
+        
+        // Move 1px every frame
+        slider.scrollLeft += 1
+
+        // Infinite Loop Logic
+        if (slider.scrollLeft >= slider.scrollWidth / 2) {
+          slider.scrollLeft = 0
+        }
+      }
+      animationRef.current = requestAnimationFrame(animate)
+    }
+
+    // Start animation
+    animationRef.current = requestAnimationFrame(animate)
+
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current)
+    }
+  }, [isSnapping]) // Re-bind if snapping state changes (though ref logic implies we don't strictly need dependency, simpler to keep it stable)
+
   return (
-    <section ref={ref} id="projects" className="py-24 md:py-40 px-6 max-w-7xl mx-auto">
+    <section ref={ref} id="projects" className="py-24 md:py-40 px-6 max-w-7xl mx-auto overflow-hidden">
       {/* Section Header */}
       <div 
         className={`mb-20 md:mb-24 transition-all duration-700 flex flex-col md:flex-row justify-between items-end gap-6 ${
@@ -37,11 +74,38 @@ const Projects = () => {
         />
       </div>
 
-      {/* Projects Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-        {projects.map((project, index) => (
+      {/* Projects Slider container (Hybrid: Auto + Manual) */}
+      <div 
+        ref={sliderRef}
+        className={`flex gap-8 overflow-x-auto no-scrollbar w-full touch-pan-x ${
+          isSnapping ? 'snap-x snap-proximity' : ''
+        }`}
+        onMouseEnter={() => {
+          isPaused.current = true
+          setIsSnapping(true)
+        }}
+        onMouseLeave={() => {
+          isPaused.current = false
+          setIsSnapping(false)
+        }}
+        onTouchStart={() => {
+          isPaused.current = true
+          setIsSnapping(true)
+        }}
+        onTouchEnd={() => {
+           // Small delay before resuming
+           setTimeout(() => {
+             isPaused.current = false
+             setIsSnapping(false)
+           }, 1000)
+        }}
+        style={{
+          scrollBehavior: 'auto' 
+        }}
+      >
+        {extendedProjects.map((project, index) => (
           <div 
-            key={index} 
+            key={`${index}-${project.title}`} 
             role="button"
             tabIndex={0}
             aria-label={`View details for ${project.title}`}
@@ -51,10 +115,10 @@ const Projects = () => {
                 setSelectedProject(project)
               }
             }}
-            className={`group cursor-pointer transition-all duration-700 outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 rounded-2xl ${
+            className={`w-[320px] md:w-[420px] lg:w-[480px] shrink-0 snap-center group cursor-pointer transition-all duration-700 outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 rounded-2xl transform-gpu ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}
-            style={{ transitionDelay: `${index * 150}ms` }}
+            style={{ transitionDelay: `${(index % projects.length) * 150}ms` }}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
             onClick={() => setSelectedProject(project)}
@@ -115,7 +179,7 @@ const Projects = () => {
                 {project.title}
               </h3>
               
-              <p className="text-zinc-500 text-sm leading-relaxed group-hover:text-zinc-400 transition-colors">
+              <p className="text-zinc-500 text-sm leading-relaxed group-hover:text-zinc-400 transition-colors line-clamp-2">
                 {project.shortDescription}
               </p>
               
