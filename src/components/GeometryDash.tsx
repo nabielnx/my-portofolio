@@ -252,21 +252,45 @@ const GeometryDash = ({ onClose }: { onClose: () => void }) => {
     return () => cancelAnimationFrame(requestRef.current)
   }, [gameState])
 
+  // --- INPUT HANDLERS (Support Mouse & Touch) ---
+  const handleInputStart = () => {
+     // Prevent default touch actions (like scrolling) to ensure game feel
+     // We rely on CSS touch-action: none for broad prevention, but can add check here if needed
+     
+    keysRef.current['Space'] = true
+    if (gameState !== 'PLAYING') resetGame()
+  }
+
+  const handleInputEnd = () => {
+    keysRef.current['Space'] = false
+  }
+
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4">
-      <div className="relative bg-[#111] rounded-2xl overflow-hidden border-4 border-[#333] shadow-2xl">
-        <canvas ref={canvasRef} width={800} height={400} className="block w-full max-w-3xl h-auto" 
-          onPointerDown={() => { keysRef.current['Space'] = true; if(gameState !== 'PLAYING') resetGame() }} 
-          onPointerUp={() => keysRef.current['Space'] = false} 
-        />
+      <div 
+        className="relative bg-[#111] rounded-2xl overflow-hidden border-4 border-[#333] shadow-2xl select-none touch-none"
+        onPointerDown={handleInputStart}
+        onPointerUp={handleInputEnd}
+        onPointerLeave={handleInputEnd}
+        // Explicit touch handlers for better responsiveness
+        onTouchStart={handleInputStart}
+        onTouchEnd={handleInputEnd}
+      >
+        <canvas ref={canvasRef} width={800} height={400} className="block w-full max-w-3xl h-auto pointer-events-none" />
+        
         {gameState !== 'PLAYING' && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md">
-            <h2 className="text-6xl font-black text-white tracking-tighter uppercase">Head Dash</h2> <br />
-            <p className="text-[#ef4444] font-bold animate-pulse font-mono uppercase tracking-widest text-sm mt-2">Space to Start</p>
+            <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase">Head Dash</h2> <br />
+            <p className="text-[#ef4444] font-bold animate-pulse font-mono uppercase tracking-widest text-sm mt-2">
+                TAP TO START
+            </p>
             <button 
-              onClick={onClose} 
+              onClick={(e) => {
+                e.stopPropagation() // Prevent triggering game start when clicking quit
+                onClose()
+              }} 
               aria-label="Close Game"
-              className="bold mt-12 text-zinc-500 hover:text-white transition-all uppercase text-xs tracking-widest outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 rounded px-4 py-2"
+              className="bold mt-12 text-zinc-500 hover:text-white transition-all uppercase text-xs tracking-widest outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 rounded px-4 py-2 pointer-events-auto"
             >
               Quit
             </button>
