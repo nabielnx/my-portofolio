@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useInView } from '../hooks/useInView'
-import { HERO_TEXT, JOURNEY_DATA } from '../data/constants'
+import { JOURNEY_DATA } from '../data/constants'
 
 const About = () => {
   const { ref, isVisible } = useInView({ threshold: 0.1 })
