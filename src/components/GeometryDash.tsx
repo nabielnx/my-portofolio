@@ -268,7 +268,7 @@ const GeometryDash = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4">
       <div 
-        className="relative bg-[#111] rounded-2xl overflow-hidden border-4 border-[#333] shadow-2xl select-none touch-none"
+        className="relative bg-[#111] rounded-xl overflow-hidden border-2 border-[#333] select-none touch-none"
         onPointerDown={handleInputStart}
         onPointerUp={handleInputEnd}
         onPointerLeave={handleInputEnd}
@@ -279,7 +279,7 @@ const GeometryDash = ({ onClose }: { onClose: () => void }) => {
         <canvas ref={canvasRef} width={800} height={400} className="block w-full max-w-3xl h-auto pointer-events-none" />
         
         {gameState !== 'PLAYING' && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 backdrop-blur-sm transition-opacity duration-300">
             <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase">Head Dash</h2> <br />
             <p className="text-[#ef4444] font-bold animate-pulse font-mono uppercase tracking-widest text-sm mt-2">
                 TAP TO START
